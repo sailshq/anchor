@@ -79,7 +79,11 @@ It also has built-in usage to verify the arguments of a function.
 This lets you be confident that the arguments are what you expect.
 ```javascript
 $.get = anchor($.get).usage(
-  ['urlish',{}, 'function']
+  // You can specify multiple usages
+  ['urlish',{}, 'function'],
+  ['urlish','function'],
+  ['urlish',{}],
+  ['urlish']
 );
 
 // The following usage will throw an error because agasdg is not urlish
@@ -87,13 +91,16 @@ $.get('agasdg', {}, function (){})
 
 // You can use the same .error notation from above in your definition to handle the error yourself
 $.get = anchor($.get).usage(
-  ['urlish',{}, 'function']
+  ['urlish',{}, 'function'],
+  ['urlish','function'],
+  ['urlish',{}],
+  ['urlish']
 ).error(function (err) {
   // Do something about the error here
 });
 ```
 
-### Multiple usages
+### Multiple usages and Argument normalization
 
 But sometimes you want to support several different argument structures.  
 And to do that, you have to, either explicitly or implicitly, name those arguments so your function can know which one was which, irrespective of how the arguments are specified.
