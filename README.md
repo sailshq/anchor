@@ -1,8 +1,8 @@
 anchor
 ======
 
-The core validation library for Sails based on https://github.com/chriso/node-validator.
-Also used for client-side form validation in Mast.
+The core validation library for the Sails ecosystem. (built on on https://github.com/chriso/node-validator)
+Adds support for strongly typed arguments, like http://lea.verou.me/2011/05/strongly-typed-javascript/
 
 ## Dependents
 
