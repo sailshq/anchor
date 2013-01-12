@@ -81,21 +81,63 @@ This lets you be confident that the arguments are what you expect.
 $.get = anchor($.get).usage(
   ['urlish',{}, 'function']
 );
+
+// The following usage will throw an error because agasdg is not urlish
+$.get('agasdg', {}, function (){})
+
+// You can use the same .error notation from above in your definition to handle the error yourself
+$.get = anchor($.get).usage(
+  ['urlish',{}, 'function']
+).error(function (err) {
+  // Do something about the error here
+});
 ```
+
+### Multiple usages
 
 But sometimes you want to support several different argument structures.  
 And to do that, you have to, either explicitly or implicitly, name those arguments so your function can know which one was which, irrespective of how the arguments are specified.
 Here's how you specify multiple usages:
-> TODO
 
-
-Then you can call your function any of the following ways:
 ```javascript
-fn(url,data,cb);
-fn(url,cb);
-fn(url).done(cb);
-fn(url).data(data).done(cb);
-fn().url(url).data(data).done(cb);
+
+
+
+// This will create a copy of the function that only allows usage that explicitly declares an id
+var getById = anchor(function (args) {
+  // the args object is constructed based on the arguments and usage you define below
+  $.get(args.endpoint, {
+    id: args.id
+  }, args.done);
+})
+  
+  // Here you can define your named arguments as temporal custom data types, 
+  // each with their OWN validation rules
+  .args({
+    endpoint: 'urlish',
+    id: 'int'
+    done: 'function'
+  })
+  
+  // To pass valiation, the user arguments must match at least one of the usages below
+  // and each argument must pass its validation definition above
+  .usage(
+    ['endpoint', 'id', 'done'],
+    
+    // Callback is optional
+    ['endpoint', 'id']
+  );
+```
+
+### Bonus
+Now the cool part.  You can call your new function any of the following ways:
+
+```javascript
+$.getById('/user',3,cb);
+$.getById('/user',3);
+
+$.getById.url('/user').id(3).done(cb);
+$.getById('/user').id(3);
 ```
 
 ## Custom data types
