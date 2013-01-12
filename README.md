@@ -1,10 +1,184 @@
 anchor
 ======
 
-The core validation library for the Sails ecosystem. (built on on https://github.com/chriso/node-validator)
-Adds support for strongly typed arguments, like http://lea.verou.me/2011/05/strongly-typed-javascript/
+Anchor is a javascript library that lets you define strict types.  It also helps you validate and normalize the usage of command line scripts and even individual functions.
 
-## Dependents
+This makes it really useful for things like:
++ Form validation on the client or server
++ Ensuring compliance with an API
++ Ensuring that the proper arguments were passed into a function or command-line script
++ Validating objects before storing them in a data store
++ Normalizing polymorphic behaviors
+
+Adds support for strongly typed arguments, like http://lea.verou.me/2011/05/strongly-typed-javascript/, but goes a step further by adding support for array and object sub-validation.
+It's also the core validation library for the Sails ecosystem. 
+
+(Built on top of the great work with https://github.com/chriso/node-validator)
+
+> This is an unfinished work in progress!  Please follow/star and keep up to date as the project develops.
+> If you're interested in contributing, drop me a note at @mikermcneil.  I welcome your thoughts, feature requests, and pull requests.
+
+## Installation
+```
+npm install anchor
+```
+
+## Basic Usage
+```javascript
+var anchor = new require('anchor')();
+
+var userData = 'some string';
+
+// This will guarantee that userData is a string
+// If it's not, an error will be thrown
+userData = anchor(userData).to('string');
+
+
+// If you want to handle the error instead of throwing it, add .error
+anchor('something').to("string").error(function (err) {
+  // Err is an error object with a subset of the original data that didn't pass
+  // Specifying .error will prevent an error from being thrown
+});
+
+```
+
+## Objects
+```javascript
+
+// Limit data to match these requirements
+var requirements = anchor({
+  name: 'string',
+  avatar: {
+    path: 'string'
+    name: 'string',
+    size: 'int',
+    type: 'string'
+  }
+});
+
+// Unvalidated data from the user
+var userData = {
+  name: 'Elvis',
+  avatar: {
+    path: '/tmp/2Gf8ahagjg42.jpg',
+    name: '2Gf8ahagjg42.jpg',
+    size: 382944
+    type: 'image/jpeg'
+  }
+};
+
+// Verify that the data matches your requirements
+anchor(userData).to(requirements);
+
+```
+
+
+
+## Functions
+It also has built-in usage to verify the arguments of a function.
+This lets you be confident that the arguments are what you expect.
+```javascript
+$.get = anchor($.get).usage(
+  ['urlish',{}, 'function']
+);
+```
+
+But sometimes you want to support several different argument structures.  
+And to do that, you have to, either explicitly or implicitly, name those arguments so your function can know which one was which, irrespective of how the arguments are specified.
+Here's how you specify multiple usages:
+> TODO
+
+
+Then you can call your function any of the following ways:
+```javascript
+fn(url,data,cb);
+fn(url,cb);
+fn(url).done(cb);
+fn(url).data(data).done(cb);
+fn().url(url).data(data).done(cb);
+```
+
+## Custom data types
+
+Anchor also supports custom data-types.
+```javascript
+
+// Define a compound validation rule using anchor types
+anchor.define('file').as({
+  name: 'string',
+  type: 'string',
+  size: 'int',
+  type: 'int'
+});
+
+// Define a custom rule using a function
+anchor.define('supportedFruit').as(function (fruit) {
+  return fruit === 'orange' || fruit === 'apple' || fruit === 'grape';
+});
+
+
+// you can use your new validation rules like any standard anchor data type:
+anchor(someUserData).to({
+  name: 'string',
+  avatar: 'file'
+});
+
+anchor(someUserData).to({
+  fruit: 'supportedFruit'
+});
+```
+
+We bundled a handful of useful defaults:
+```javascript
+anchor(someUserData).to({
+  id: 'int',
+  name: 'string',
+  phone: 'phone',
+  creditcard: 'creditcard',
+  joinDate: 'date',
+  email: 'email',
+  twitterHandle: 'twitter'
+});
+```
+
+
+The example below demonstrates the complete list of supported default data types:
+```javascript
+anchor(userData).to({
+  id: 'int',
+  name: 'string',
+  phone: 'phone',
+  creditcard: 'creditcard',
+  joinDate: 'date',
+  email: 'email',
+  twitterHandle: 'twitter',
+  homepage: 'url',
+  
+  // This requires any data
+  someData: {},
+  
+  // This will require a list of >=0 hex colors
+  favoriteColors: ['htmlcolor'],
+  
+  // This will require a list of >=0 badge objects, as defined:
+  badges: [{
+    name: 'string',
+    // This will require a list of privilege objects, as defined:
+    privileges: [{
+      id: 'int'
+      permission: 'string'
+    }]
+  }]
+});
+```
+
+## Asynchronous Usage / Promises
+Anchor can also help you normalize your synchronous and asynchronous functions into a uniform api.  It allows you to support both last-argument-callback (Node standard) and promise usage out of the box.
+
+> TODO
+
+
+## Plans
 
 #### waterline-anchor
 Pre & Post Adapter/Model validation
