@@ -307,7 +307,7 @@ function createUser (req,res,next) {
       // Grant permission for the user to administer itself
       permission: Permission.create({
         targetModel : 'user',
-        targetId    : params.id'
+        targetId    : params.id,
         UserId      : params.id,
       }).done
       
