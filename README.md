@@ -1,6 +1,10 @@
 anchor
 ======
 
+> IMPORTANT: This is an **unfinished work in progress**!  Please follow/star and keep up to date as the project develops.
+> If you're interested in contributing, drop me a note at @mikermcneil.  I welcome your thoughts, feature requests, and pull requests.
+
+
 Anchor is a javascript library that lets you define strict types.  It also helps you validate and normalize the usage of command line scripts and even individual functions.
 
 This makes it really useful for things like:
@@ -14,9 +18,6 @@ Adds support for strongly typed arguments, like http://lea.verou.me/2011/05/stro
 It's also the core validation library for the Sails ecosystem. 
 
 (Built on top of the great work with https://github.com/chriso/node-validator)
-
-> This is an unfinished work in progress!  Please follow/star and keep up to date as the project develops.
-> If you're interested in contributing, drop me a note at @mikermcneil.  I welcome your thoughts, feature requests, and pull requests.
 
 ## Installation
 
