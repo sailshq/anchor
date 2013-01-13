@@ -313,32 +313,32 @@ function createUser (req,res,next) {
       
     ], function (err, results) {
     
-    // Just basic usage, but this prevents you from dealing with non-existent values and null pointers
-    // both when providing a consistent API on the server-side 
-    // AND when marshalling server-sent data on the client-side
-    // i.e. this sucks: user.friends && user.friends.length && user.friends[0] && user.friends[0].id
-    var user = res.anchor(results.user).to({
-      id: 'int',
-      name: 'string',
-      email: 'email',
-      friends: [{
+      // Just basic usage, but this prevents you from dealing with non-existent values and null pointers
+      // both when providing a consistent API on the server-side 
+      // AND when marshalling server-sent data on the client-side
+      // i.e. this sucks: user.friends && user.friends.length && user.friends[0] && user.friends[0].id
+      var user = res.anchor(results.user).to({
         id: 'int',
         name: 'string',
-        email: 'string'
-      }]
-    });
-    
-    // Respond with JSON
-    // Could just pass the user object, 
-    // but in this case we're demonstrating a custom mapping 
-    // (like you might use to implement a custom, predefined API)
-    // You can safely know all the .'s you're using won't result in any errors, since you validated this above
-    res.json({
-      user_id           : user.id,
-      user_full_name    : user.name,
-      user_email_address: user.email,
-      friends           : user.friends
-    });
+        email: 'email',
+        friends: [{
+          id: 'int',
+          name: 'string',
+          email: 'string'
+        }]
+      });
+      
+      // Respond with JSON
+      // Could just pass the user object, 
+      // but in this case we're demonstrating a custom mapping 
+      // (like you might use to implement a custom, predefined API)
+      // You can safely know all the .'s you're using won't result in any errors, since you validated this above
+      res.json({
+        user_id           : user.id,
+        user_full_name    : user.name,
+        user_email_address: user.email,
+        friends           : user.friends
+      });
   });
   
 }
@@ -358,6 +358,20 @@ Here's an example of how you might right your `create()` action to comply with a
 var UserController = {
   create: {
     
+    // Marshal the request 
+    request   : {
+      id    : 'int',
+      name  : 'string'
+    },
+    
+    // Marshal the response to use the predetermined API
+    response  : {
+      user_id             : 'user.id'
+      user_full_name      : 'user.name'
+      user_email_address  : 'user.email'
+      friends             : 'user.friends'
+    },
+    
     // Define an arbitrarily named attribute that will be used in response
     // and the function that will populate it
     // The function will be called with the entire request object as the first parameter
@@ -372,25 +386,13 @@ var UserController = {
         // Grant permission for the user to administer itself
         permission: Permission.create({
           targetModel : 'user',
-          targetId    : params.id'
+          targetId    : params.id,
           UserId      : params.id,
         }).done
         
       ], cb);
     }
-    
-    // Marshal the request 
-    request   : {
-      id    : 'int',
-      name  : 'string'
-    },
-    
-    response  : {
-      user_id             : 'user.id'
-      user_full_name      : 'user.name'
-      user_email_address  : 'user.email'
-      friends             : 'user.friends'
-    }
+
   }
 };
 module.exports = UserController;
