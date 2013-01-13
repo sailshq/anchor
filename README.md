@@ -376,26 +376,52 @@ var UserController = {
     // and the function that will populate it
     // The function will be called with the entire request object as the first parameter
     // Expects a callback like: function (err, result) {}   [where result === user]
-    user      : function (params,cb) {
-      
-      async.auto({
-        
-        // Create the user itself
-        user: User.create(params).done,
-        
-        // Grant permission for the user to administer itself
-        permission: Permission.create({
-          targetModel : 'user',
-          targetId    : params.id,
-          UserId      : params.id,
-        }).done
-        
-      ], cb);
-    }
+    user      : User.create
 
   }
 };
 module.exports = UserController;
+
+```
+
+The model validation also uses anchor:
+```javascript
+// User.js
+var User = {
+  adapter: 'mongo',
+  
+  attributes: {
+    id: 'int',
+    name: 'string',
+    email: 'email',
+    friends: [{
+      id: 'int',
+      name: 'string',
+      email: 'string'
+    }]
+  },
+  
+  // Create a user, but also create the permission for it to manage itself
+  create: function (values,cb) {
+    
+    async.auto({
+      
+      // Create the user itself
+      user: User.create(values).done,
+      
+      // Grant permission for the user to administer itself
+      permission: Permission.create({
+        targetModel : 'user',
+        targetId    : values.id,
+        UserId      : values.id,
+      }).done
+      
+    ], function (err, results) {
+      cb(err, results.user);
+    });
+  }
+};
+module.exports = User;
 
 ```
 
