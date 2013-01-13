@@ -281,6 +281,123 @@ Anchor can also help you normalize your synchronous and asynchronous functions i
 > TODO
 
 
+
+## Express/Connect Usage
+```javascript
+app.use(require('anchor'));
+
+// ...
+
+function createUser (req,res,next) {
+  // Any errors will be handled by Express/Connect
+  var params = req.anchor.to({
+    id: 'int',
+    name: 'string'
+  });
+  
+  
+  // Do stuff here
+  // This could be anything-- we chose to demonstrate a create method 
+  // in this case from our favorite ORM, Waterline (http://github.com/mikermcneil/waterline)
+   async.auto([
+        
+      // Create the user itself
+      user: User.create(params).done,
+      
+      // Grant permission for the user to administer itself
+      permission: Permission.create({
+        targetModel : 'user',
+        targetId    : params.id'
+        UserId      : params.id,
+      }).done
+      
+    ], function (err, results) {
+    
+    // Just basic usage, but this prevents you from dealing with non-existent values and null pointers
+    // both when providing a consistent API on the server-side 
+    // AND when marshalling server-sent data on the client-side
+    // i.e. this sucks: user.friends && user.friends.length && user.friends[0] && user.friends[0].id
+    var user = res.anchor(results.user).to({
+      id: 'int',
+      name: 'string',
+      email: 'email',
+      friends: [{
+        id: 'int',
+        name: 'string',
+        email: 'string'
+      }]
+    });
+    
+    // Respond with JSON
+    // Could just pass the user object, 
+    // but in this case we're demonstrating a custom mapping 
+    // (like you might use to implement a custom, predefined API)
+    // You can safely know all the .'s you're using won't result in any errors, since you validated this above
+    res.json({
+      user_id           : user.id,
+      user_full_name    : user.name,
+      user_email_address: user.email,
+      friends           : user.friends
+    });
+  });
+  
+}
+```
+
+
+## Sails Usage
+
+Anchor is bundled with Sails.  You can use anchor in Sails just like you would with the connect/express middleware integration, but you can also take an advantage of the extended functionality as seen below.
+
+Here's an example of how you might right your `create()` action to comply with a predefined API in Sails using built-in Anchor integration:
+> Note: In practice, you'd want to pull the function that creates the user and the permission out and put it in your model file, overriding the default User.create() behaviour.
+
+```javascript
+// UserController.js
+
+var UserController = {
+  create: {
+    
+    // Define an arbitrarily named attribute that will be used in response
+    // and the function that will populate it
+    // The function will be called with the entire request object as the first parameter
+    // Expects a callback like: function (err, result) {}   [where result === user]
+    user      : function (params,cb) {
+      
+      async.auto({
+        
+        // Create the user itself
+        user: User.create(params).done,
+        
+        // Grant permission for the user to administer itself
+        permission: Permission.create({
+          targetModel : 'user',
+          targetId    : params.id'
+          UserId      : params.id,
+        }).done
+        
+      ], cb);
+    }
+    
+    // Marshal the request 
+    request   : {
+      id    : 'int',
+      name  : 'string'
+    },
+    
+    response  : {
+      user_id             : 'user.id'
+      user_full_name      : 'user.name'
+      user_email_address  : 'user.email'
+      friends             : 'user.friends'
+    }
+  }
+};
+module.exports = UserController;
+
+```
+
+
 ## Plans
 
 #### waterline-anchor
