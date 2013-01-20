@@ -45,7 +45,10 @@ Anchor.prototype.rules = {
 };
 
 // Enforce the data with the specified ruleset
-Anchor.prototype.to = function (ruleset) {
+Anchor.prototype.to = function (ruleset, error) {
+
+	// If error is specififed, handle error instead of throwing it
+	if (error) this.error = error;
 
 	if (_.isArray(ruleset)) {
 		throw new Error ('Anchor does not support plural rulesets (arrays) yet!');
@@ -54,7 +57,7 @@ Anchor.prototype.to = function (ruleset) {
 		throw new Error ('Anchor does not support compound rulesets (objects) yet!');
 	}
 	else {
-		return matchRule(this.data, ruleset);
+		return matchRule(this.data, ruleset, this);
 	}
 };
 
@@ -84,11 +87,6 @@ Anchor.prototype.usage = function () {
 	var usages = _.toArray(arguments);
 };
 
-// Handle error instead of throwing it
-Anchor.prototype.error = function (args) {
-	
-};
-
 // Public access
 module.exports = function (entity) {
 	return new Anchor(entity);
@@ -97,17 +95,18 @@ module.exports = function (entity) {
 
 // Return whether a piece of data matches a rule
 // ruleName :: (STRING)
-function matchRule (datum, ruleName) {
+function matchRule (datum, ruleName, ctx) {
 	var rule = Anchor.prototype.rules[ruleName];
 	if (!rule) throw new Error ('Unknown rule: ' + ruleName);
 
 	// TODO: Allow for regexp rules
-
 	var outcome = rule(datum);
 
-	// Handle error case
-	// TODO: allow .error() to handle this behavior instead
+	// Allow .error() to handle the error instead of throwing it
 	if (!outcome) {
+		if (ctx.error) {
+			ctx.error(this.error);
+		}
 		throw new Error ('Validation error: "'+datum+'" is not of type "'+ruleName+'"');
 	}
 	else return outcome;
