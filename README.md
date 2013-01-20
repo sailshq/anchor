@@ -33,14 +33,13 @@ npm install anchor
 
 ## Basic Usage
 ```javascript
-var anchor = new require('anchor')();
+var anchor = require('anchor');
 
 var userData = 'some string';
 
 // This will guarantee that userData is a string
 // If it's not, an error will be thrown
 userData = anchor(userData).to('string');
-
 
 // If you want to handle the error instead of throwing it, add .error
 anchor('something').to("string").error(function (err) {
