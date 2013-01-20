@@ -42,13 +42,22 @@ describe('basic usage', function() {
 		});
 	});
 
-	it (' should support "string" rule ', function () {
-		return testRule('string','foo',22482);
+	describe('strings', function () {
+
+		it (' should support "string" rule ', function () {
+			return testRule('string','foo',22482);
+		});
+
+		it (' should support "email" rule ', function () {
+			return testRule('email','fox.and.the.hound@theforest.com','foo');
+		});
+
+		it (' should support "email" rule ', function () {
+			return testRule('email','fox.and.the.hound@theforest.com','foo');
+		});
+
 	});
 
-	it (' should support "email" rule ', function () {
-		return testRule('email','fox.and.the.hound@theforest.com','foo');
-	});
 
 	describe('numbers', function() {
 

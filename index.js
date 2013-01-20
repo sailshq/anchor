@@ -16,6 +16,7 @@ function Anchor (entity) {
 	else {
 		this.data = entity;
 	}
+	return this;
 }
 
 // Built-in data type rules
@@ -61,7 +62,9 @@ Anchor.prototype.rules = {
 Anchor.prototype.to = function (ruleset, error) {
 
 	// If error is specififed, handle error instead of throwing it
-	if (error) this.error = error;
+	if (error) {
+		this.errorFn = error;
+	}
 
 	if (_.isArray(ruleset)) {
 		throw new Error ('Anchor does not support plural rulesets (arrays) yet!');
@@ -113,15 +116,23 @@ function matchRule (datum, ruleName, ctx) {
 	if (!rule) throw new Error ('Unknown rule: ' + ruleName);
 
 	// TODO: Allow for regexp rules
-	var outcome = rule(datum);
 
-	// Allow .error() to handle the error instead of throwing it
-	if (!outcome) {
-		if (ctx.error) {
-			ctx.error(this.error);
-		}
-		throw new Error ('Validation error: "'+datum+'" is not of type "'+ruleName+'"');
+	try {
+		var outcome = rule(datum);
+		if (!outcome) failure(datum,ruleName, outcome);
+		else return outcome;
 	}
-	else return outcome;
+	catch (e) {
+		failure(datum, ruleName, e);
+	}
+
+	function failure(datum, ruleName, err) {
+		// Allow .error() to handle the error instead of throwing it
+		if (ctx.errorFn) {
+			ctx.errorFn(err);
+			return err;
+		}
+		else throw new Error ('Validation error: "'+datum+'" is not of type "'+ruleName+'"');
+	}
 }
 
