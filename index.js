@@ -2,6 +2,11 @@ var _ = require('underscore');
 var check = require('validator').check;
 var sanitize = require('validator').sanitize;
 
+// Public access
+module.exports = function (entity) {
+	return new Anchor(entity);
+};
+
 
 // Specify the function, object, or list to be anchored
 function Anchor (entity) {
@@ -54,7 +59,8 @@ Anchor.prototype.rules = {
 
 };
 
-// Enforce the data with the specified ruleset
+// Enforce that the data matches the specified ruleset
+// If it doesn't, throw an error.
 Anchor.prototype.to = function (ruleset, error) {
 	var self = this;
 
@@ -66,35 +72,42 @@ Anchor.prototype.to = function (ruleset, error) {
 	return Anchor.deepMatch(self.data, ruleset, self);
 };
 
+// Coerce the data to the specified ruleset if possible
+// otherwise throw an error
+Anchor.prototype.cast = function (ruleset) {
+	todo();
+};
+
+// Coerce the data to the specified ruleset no matter what
+Anchor.prototype.hurl = function (ruleset) {
+	todo();
+};
+
 // Specify default values to automatically populated when undefined
 Anchor.prototype.defaults = function (ruleset) {
-	
+	todo();
 };
 
 // Declare name of custom data type
 Anchor.prototype.define = function (name) {
-
+	todo();
 };
 
 // Specify custom ruleset
 Anchor.prototype.as = function (ruleset) {
-	
+	todo();
 };
 
 
 // Specify named arguments and their rulesets as an object
 Anchor.prototype.args = function (args) {
-	
+	todo();
 };
 
 // Specify each of the permitted usages for this function
 Anchor.prototype.usage = function () {
 	var usages = _.toArray(arguments);
-};
-
-// Public access
-module.exports = function (entity) {
-	return new Anchor(entity);
+	todo();
 };
 
 
@@ -168,14 +181,6 @@ Anchor.deepMatch = function deepMatch (data, ruleset, ctx, depth, maxDepth) {
 		throw new Error ('Depth of object being parsed exceeds maxDepth ().  Maybe it links to itself?');
 	}
 
-	// console.log("\n\n*********:***********:********");
-	// console.log("depth:", depth);
-	// console.log("key:", key);
-	// console.log("rule:", rule);
-	// console.log("ruleset:", ruleset);
-	// console.log("data:", data);
-	// console.log("keyChain:", keyChain);
-
 	// If this is a schema rule, check each item in the data collection
 	if (_.isArray(ruleset) && ruleset.length !== 0) {
 		if (ruleset.length > 1) {
@@ -204,15 +209,6 @@ Anchor.deepMatch = function deepMatch (data, ruleset, ctx, depth, maxDepth) {
 	else return Anchor.match(data, ruleset, ctx);
 };
 
-function reduceKeyChain (data, keyChain) {
-	// Get full .-delimited attr name and value
-	var topLevelAttrName = keyChain.shift();
-	var topLevelAttrVal = data[topLevelAttrName];
-	var attrName = _.reduce(keyChain,function(memo,key) {
-		return memo + "." + key;
-	},topLevelAttrName);
-
-	return topLevelAttrName && _.reduce(keyChain,function(memo,key) {
-		return memo && memo[key];
-	}, topLevelAttrVal);
+function todo() {
+	throw new Error("Not implemented yet! If you'd like to contribute, tweet @mikermcneil.");
 }
