@@ -156,6 +156,9 @@ anchor(userData).to({
 
 
 ## Functions
+
+> TODO: Support for functions is incomplete.  If you'd like to contribute, please reach out at @balderdashy!
+
 It also has built-in usage to verify the arguments of a function.
 This lets you be confident that the arguments are what you expect.
 ```javascript
@@ -225,11 +228,17 @@ Now the cool part.  You can call your new function any of the following ways:
 ```javascript
 $.getById('/user',3,cb);
 $.getById('/user',3);
+```
 
+<!--
+> The api will have to change a bit here, so omitting this part for now.
+
+Or even use deferred object notation!
+```
 $.getById.url('/user').id(3).done(cb);
 $.getById('/user').id(3);
 ```
-
+-->
 
 
 ## Default values
