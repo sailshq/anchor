@@ -9,10 +9,6 @@ function Anchor (entity) {
 		this.fn = entity;
 		throw new Error ('Anchor does not support functions yet!');
 	}
-	else if (_.isArray(entity)) {
-		this.list = entity;
-		throw new Error ('Anchor does not support list data sets yet!');
-	}
 	else {
 		this.data = entity;
 	}
@@ -63,31 +59,29 @@ Anchor.prototype.to = function (ruleset, error) {
 	var self = this;
 
 	// If error is specififed, handle error instead of throwing it
-	if (error) {
-		this.errorFn = error;
-	}
+	if (error) self.errorFn = error;
 
-	if (_.isObject(ruleset)) {
-		recursiveMatch(ruleset, function (rule, keyChain) {
-			var topLevelAttrName = keyChain.shift();
-			var topLevelAttrVal = self.data[topLevelAttrName];
+	// Use deep match to descend into the collection and verify each item and/or key
+	// Stop at default maxDepth (50) to prevent infinite loops in self-associations
+	Anchor.deepMatch(ruleset, function (rule, keyChain) {
 
-			// Get full .-delimited parameter name
-			var attrName = _.reduce(keyChain,function(memo,key) {
-				return memo+"."+key;
-			},topLevelAttrName);
+		// if no keyChain exists, the provided ruleset was not a collection-- just do a basic match
+		if (!keyChain) {
+			return Anchor.match(self.data, rule, self);
+		}
 
-			// Get parameter value
-			var attrVal = topLevelAttrName && _.reduce(keyChain,function(memo,key) {
-				return memo && memo[key];
-			}, topLevelAttrVal);
+		// Get full .-delimited attr name and value
+		var topLevelAttrName = keyChain.shift();
+		var topLevelAttrVal = self.data[topLevelAttrName];
+		var attrName = _.reduce(keyChain,function(memo,key) {
+			return memo+"."+key;
+		},topLevelAttrName);
+		var attrVal = topLevelAttrName && _.reduce(keyChain,function(memo,key) {
+			return memo && memo[key];
+		}, topLevelAttrVal);
 
-			return matchRule(attrVal, rule, this);
-		});
-	}
-	else {
-		return matchRule(this.data, ruleset, this);
-	}
+		return Anchor.match(attrVal, rule, self);
+	});
 };
 
 // Specify default values to automatically populated when undefined
@@ -124,7 +118,7 @@ module.exports = function (entity) {
 
 // Return whether a piece of data matches a rule
 // ruleName :: (STRING)
-function matchRule (datum, ruleName, ctx) {
+Anchor.match = function match (datum, ruleName, ctx) {
 
 
 	try {
@@ -173,13 +167,15 @@ function matchRule (datum, ruleName, ctx) {
 		else if (err) throw new Error(err);
 		else throw new Error ('Validation error: "'+datum+'" is not of type "'+ruleName+'"');
 	}
-}
+};
 
 
-// Match collection using function
-function recursiveMatch (collection, fn, maxDepth) {
+// Match a complex collection or model against a schema
+Anchor.deepMatch = function deepMatch (collection, fn, maxDepth) {
+	
+	// If collection is not an object or array, use the provided function to validate
 	if (!_.isObject(collection)) {
-		return true;
+		return fn(collection);
 	}
 
 	// Default value for maxDepth
@@ -224,4 +220,4 @@ function recursiveMatch (collection, fn, maxDepth) {
 			return fn(item,lengthenedKeyChain);
 		}
 	}
-}
+};
