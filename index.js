@@ -60,17 +60,30 @@ Anchor.prototype.rules = {
 
 // Enforce the data with the specified ruleset
 Anchor.prototype.to = function (ruleset, error) {
+	var self = this;
 
 	// If error is specififed, handle error instead of throwing it
 	if (error) {
 		this.errorFn = error;
 	}
 
-	if (_.isArray(ruleset)) {
-		throw new Error ('Anchor does not support plural rulesets (arrays) yet!');
-	}
-	else if (_.isObject(ruleset)) {
-		throw new Error ('Anchor does not support compound rulesets (objects) yet!');
+	if (_.isObject(ruleset)) {
+		recursiveMatch(ruleset, function (rule, keyChain) {
+			var topLevelAttrName = keyChain.shift();
+			var topLevelAttrVal = self.data[topLevelAttrName];
+
+			// Get full .-delimited parameter name
+			var attrName = _.reduce(keyChain,function(memo,key) {
+				return memo+"."+key;
+			},topLevelAttrName);
+
+			// Get parameter value
+			var attrVal = topLevelAttrName && _.reduce(keyChain,function(memo,key) {
+				return memo && memo[key];
+			}, topLevelAttrVal);
+
+			return matchRule(attrVal, rule, this);
+		});
 	}
 	else {
 		return matchRule(this.data, ruleset, this);
@@ -112,13 +125,38 @@ module.exports = function (entity) {
 // Return whether a piece of data matches a rule
 // ruleName :: (STRING)
 function matchRule (datum, ruleName, ctx) {
-	var rule = Anchor.prototype.rules[ruleName];
-	if (!rule) throw new Error ('Unknown rule: ' + ruleName);
 
-	// TODO: Allow for regexp rules
 
 	try {
-		var outcome = rule(datum);
+		var outcome, rule;
+
+
+		// Determine rule
+		if (_.isEqual(ruleName,[])) {
+			// [] specified as data type checks for an array
+			rule = _.isArray;
+		}
+		else if (_.isEqual(ruleName,{})) {
+			// {} specified as data type checks for any object
+			rule = _.isObject;	
+		}
+		else if (_.isRegExp(ruleName)) {
+			// Allow regexes to be used
+			rule = function (x) {
+				if (!_.isString(x)) return false;
+				x.match(ruleName);
+			};
+		}
+		else rule = Anchor.prototype.rules[ruleName];
+		
+
+		// Determine outcome
+		if (!rule) {
+			throw new Error ('Unknown rule: ' + ruleName);
+		}
+		else outcome = rule(datum);
+
+		// Return outcome or handle failure
 		if (!outcome) failure(datum,ruleName, outcome);
 		else return outcome;
 	}
@@ -132,7 +170,58 @@ function matchRule (datum, ruleName, ctx) {
 			ctx.errorFn(err);
 			return err;
 		}
+		else if (err) throw new Error(err);
 		else throw new Error ('Validation error: "'+datum+'" is not of type "'+ruleName+'"');
 	}
 }
 
+
+// Match collection using function
+function recursiveMatch (collection, fn, maxDepth) {
+	if (!_.isObject(collection)) {
+		return true;
+	}
+
+	// Default value for maxDepth
+	maxDepth = maxDepth || 50;
+
+	// Kick off recursive function
+	return _all(collection,null,[],fn,0);
+
+	function _all(item,key,keyChain,fn,depth) {
+		var lengthenedKeyChain = [];
+
+		if (depth > maxDepth) {
+			throw new Error ('Depth of object being parsed exceeds maxDepth ().  Maybe it links to itself?');
+		}
+
+		// If the key is null, this is the root item, so skip this step
+		// Descend
+		if (key !== null && keyChain) {
+			lengthenedKeyChain = keyChain.slice(0);
+			lengthenedKeyChain.push(key);
+		}
+
+		// If the current item is an array, check each item
+		if (_.isArray(item)) {
+
+			// Don't treat empty array as a collection
+			if (item.length === 0) return fn(item, lengthenedKeyChain);
+			else return _.all(item, function(subval, subkey) {
+				return _all(subval,subkey,lengthenedKeyChain,fn,depth+1);
+			});
+		}
+		// If the current item is an object, check each key
+		else if (_.isObject(item)) {
+			// Don't treat empty object as a collection
+			if (_.keys(item).length === 0) return fn(item, lengthenedKeyChain);
+			return _.all(item,function(subval,subkey) {
+				return _all(subval,subkey,lengthenedKeyChain,fn,depth+1);
+			});
+		}
+		// Leaf items land here and execute the iterator
+		else {
+			return fn(item,lengthenedKeyChain);
+		}
+	}
+}

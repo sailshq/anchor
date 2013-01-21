@@ -1,6 +1,32 @@
 var _ = require('underscore');
 var anchor = require('../index.js');
 
+beforeEach (function () {
+	testRule = function testRule(rule, example, nonexample) {
+		var err = false;
+
+		// Should not throw error
+		anchor(example).to(rule);
+
+		// Should throw error
+		try {
+			anchor(nonexample).to(rule);
+
+			// Should never reach here
+			err = 'Invalid input (' + nonexample + ') allowed through as a ' + rule + '.';
+		} catch(e) {
+			return true;
+		}
+
+		if(err) {
+			console.error('*****************');
+			console.error('nonexample', nonexample);
+			console.error('rule', rule);
+			throw new Error(err);
+		}
+	};
+});
+
 describe('basic usage', function() {
 
 	it(' should create an anchor object in naive usage',function () {
@@ -74,51 +100,4 @@ describe('basic usage', function() {
 		});
 	});
 
-	function testRule (rule, example, nonexample) {
-		var err = false;
-
-		// Should not throw error
-		anchor(example).to(rule);
-		
-		// Should throw error
-		try {
-			anchor(nonexample).to(rule);
-
-			// Should never reach here
-			err = 'Invalid input ('+nonexample+') allowed through.';
-		}
-		catch (e) {
-			return true;
-		}
-
-		if (err) throw new Error(err);
-	}
-
 });
-
-
-//////////////////////////////////////////////////////
-// REFERENCE:
-//////////////////////////////////////////////////////
-function xxxxx() {
-
-
-	var check = require('validator').check,
-	    sanitize = require('validator').sanitize;
-
-	//Validate
-	check('test@email.com').len(6, 64).isEmail();        //Methods are chainable
-	check('abc').isInt();                                //Throws 'Invalid integer'
-	check('abc', 'Please enter a number').isInt();       //Throws 'Please enter a number'
-	check('abcdefghijklmnopzrtsuvqxyz').is(/^[a-z]+$/);
-
-	//Sanitize / Filter
-	var inte = sanitize('0123').toInt();                  //123
-	var bool = sanitize('true').toBoolean();             //true
-	var str0 = sanitize(' \t\r hello \n').trim();       //'hello'
-	var str1 = sanitize('aaaaaaaaab').ltrim('a');         //'b'
-	var str2 = sanitize(large_input_str).xss();
-	var str3 = sanitize('&lt;a&gt;').entityDecode();      //'<a>'
-
-}
-
