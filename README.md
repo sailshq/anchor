@@ -438,16 +438,10 @@ module.exports = User;
 npm test
 ```
 
-Dependencies and Compatibility
---
-
-Tested with node 0.8.1
-Sails is built on the rock-solid foundations of ExpressJS and Socket.io.  
-
 
 ## Who Built This?
-The Sails framework was developed by @mikermcneil and is supported by Balderdash Co (@balderdashy).  We build realtime web and mobile apps as a service for our customers, and over time, after trying lots of different methodologies, I ended up crystallizing all our best code and conventions into Sails.  
-Then, we open-sourced it, because no one should have to go through that again.  Seriously.  Hopefully, it makes your life a little bit easier!
+Anchor was developed by @mikermcneil and is supported by Balderdash Co (@balderdashy).
+Hopefully, it makes your life a little bit easier!
 
 
 The MIT License (MIT)
