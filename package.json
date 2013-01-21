@@ -1,7 +1,7 @@
 {
   "name": "anchor",
   "version": "0.0.0",
-  "description": "Unreleased validation lib for Sails",
+  "description": "Recursive validation library with support for objects and lists",
   "main": "index.js",
   "directories": {
     "test": "test"
