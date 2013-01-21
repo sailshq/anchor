@@ -8,6 +8,7 @@ beforeEach (function () {
 		// Should not throw error
 		anchor(example).to(rule);
 
+		
 		// Should throw error
 		try {
 			anchor(nonexample).to(rule);

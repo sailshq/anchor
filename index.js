@@ -9,9 +9,9 @@ function Anchor (entity) {
 		this.fn = entity;
 		throw new Error ('Anchor does not support functions yet!');
 	}
-	else {
-		this.data = entity;
-	}
+	else this.data = entity;
+
+
 	return this;
 }
 
@@ -63,25 +63,7 @@ Anchor.prototype.to = function (ruleset, error) {
 
 	// Use deep match to descend into the collection and verify each item and/or key
 	// Stop at default maxDepth (50) to prevent infinite loops in self-associations
-	Anchor.deepMatch(ruleset, function (rule, keyChain) {
-
-		// if no keyChain exists, the provided ruleset was not a collection-- just do a basic match
-		if (!keyChain) {
-			return Anchor.match(self.data, rule, self);
-		}
-
-		// Get full .-delimited attr name and value
-		var topLevelAttrName = keyChain.shift();
-		var topLevelAttrVal = self.data[topLevelAttrName];
-		var attrName = _.reduce(keyChain,function(memo,key) {
-			return memo+"."+key;
-		},topLevelAttrName);
-		var attrVal = topLevelAttrName && _.reduce(keyChain,function(memo,key) {
-			return memo && memo[key];
-		}, topLevelAttrVal);
-
-		return Anchor.match(attrVal, rule, self);
-	});
+	return Anchor.deepMatch(self.data, ruleset, self);
 };
 
 // Specify default values to automatically populated when undefined
@@ -171,53 +153,66 @@ Anchor.match = function match (datum, ruleName, ctx) {
 
 
 // Match a complex collection or model against a schema
-Anchor.deepMatch = function deepMatch (collection, fn, maxDepth) {
+Anchor.deepMatch = function deepMatch (data, ruleset, ctx, depth, maxDepth) {
 	
-	// If collection is not an object or array, use the provided function to validate
-	if (!_.isObject(collection)) {
-		return fn(collection);
+	// If ruleset is not an object or array, use the provided function to validate
+	if (!_.isObject(ruleset)) {
+		return Anchor.match(data,ruleset,ctx);
 	}
 
-	// Default value for maxDepth
+	// Default value for maxDepth and depth
 	maxDepth = maxDepth || 50;
+	depth = depth || 0;
 
-	// Kick off recursive function
-	return _all(collection,null,[],fn,0);
-
-	function _all(item,key,keyChain,fn,depth) {
-		var lengthenedKeyChain = [];
-
-		if (depth > maxDepth) {
-			throw new Error ('Depth of object being parsed exceeds maxDepth ().  Maybe it links to itself?');
-		}
-
-		// If the key is null, this is the root item, so skip this step
-		// Descend
-		if (key !== null && keyChain) {
-			lengthenedKeyChain = keyChain.slice(0);
-			lengthenedKeyChain.push(key);
-		}
-
-		// If the current item is an array, check each item
-		if (_.isArray(item)) {
-
-			// Don't treat empty array as a collection
-			if (item.length === 0) return fn(item, lengthenedKeyChain);
-			else return _.all(item, function(subval, subkey) {
-				return _all(subval,subkey,lengthenedKeyChain,fn,depth+1);
-			});
-		}
-		// If the current item is an object, check each key
-		else if (_.isObject(item)) {
-			// Don't treat empty object as a collection
-			if (_.keys(item).length === 0) return fn(item, lengthenedKeyChain);
-			return _.all(item,function(subval,subkey) {
-				return _all(subval,subkey,lengthenedKeyChain,fn,depth+1);
-			});
-		}
-		// Leaf items land here and execute the iterator
-		else {
-			return fn(item,lengthenedKeyChain);
-		}
+	if (depth > maxDepth) {
+		throw new Error ('Depth of object being parsed exceeds maxDepth ().  Maybe it links to itself?');
 	}
+
+	// console.log("\n\n*********:***********:********");
+	// console.log("depth:", depth);
+	// console.log("key:", key);
+	// console.log("rule:", rule);
+	// console.log("ruleset:", ruleset);
+	// console.log("data:", data);
+	// console.log("keyChain:", keyChain);
+
+	// If this is a schema rule, check each item in the data collection
+	if (_.isArray(ruleset) && ruleset.length !== 0) {
+		if (ruleset.length > 1) {
+			throw new Error ('[] (or schema) rules can contain only one item.');
+		}
+		
+		// Handle plurals (arrays with a schema rule)
+		else return _.all(data, function (model) {
+			return Anchor.deepMatch(model, ruleset[0], ctx, depth+1);
+		});
+	}
+
+	// If the current rule is an object, check each key
+	else if (!_.isArray(ruleset) && _.isObject(ruleset)) {
+
+		// Don't treat empty object as a ruleset
+		if (_.keys(ruleset).length === 0) {
+			return Anchor.match(data, ruleset, ctx);
+		}
+		else return _.all(ruleset,function(subRule,key) {
+			return Anchor.deepMatch(data[key], ruleset[key], ctx, depth+1);
+		});
+	}
+
+	// Leaf rules land here and execute the iterator
+	else return Anchor.match(data, ruleset, ctx);
 };
+
+function reduceKeyChain (data, keyChain) {
+	// Get full .-delimited attr name and value
+	var topLevelAttrName = keyChain.shift();
+	var topLevelAttrVal = data[topLevelAttrName];
+	var attrName = _.reduce(keyChain,function(memo,key) {
+		return memo + "." + key;
+	},topLevelAttrName);
+
+	return topLevelAttrName && _.reduce(keyChain,function(memo,key) {
+		return memo && memo[key];
+	}, topLevelAttrVal);
+}

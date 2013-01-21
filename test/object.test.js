@@ -13,7 +13,7 @@ describe('objects', function() {
 		});
 	});
 
-	it(' should properly validate a simple object', function() {
+	it(' should properly validate another simple object', function() {
 		testRule({
 			name: 'string',
 			id: 'numeric'
