@@ -2,7 +2,7 @@ anchor
 ======
 
 > IMPORTANT: This is an **unfinished work in progress**!  Please follow/star and keep up to date as the project develops.
-> If you're interested in contributing, drop me a note at @mikermcneil.  I welcome your thoughts, feature requests, and pull requests.
+> If you're interested in contributing, drop me a note at @mikermcneil.  I welcome your feedback, ideas, and pull requests :)
 
 
 Anchor is a javascript library that lets you define strict types.  It also helps you validate and normalize the usage of command line scripts and even individual functions.
@@ -156,6 +156,9 @@ anchor(userData).to({
 
 
 ## Functions
+
+> TODO: Support for functions is incomplete.  If you'd like to contribute, please reach out at @balderdashy!
+
 It also has built-in usage to verify the arguments of a function.
 This lets you be confident that the arguments are what you expect.
 ```javascript
@@ -225,11 +228,17 @@ Now the cool part.  You can call your new function any of the following ways:
 ```javascript
 $.getById('/user',3,cb);
 $.getById('/user',3);
+```
 
+<!--
+> The api will have to change a bit here, so omitting this part for now.
+
+Or even use deferred object notation!
+```
 $.getById.url('/user').id(3).done(cb);
 $.getById('/user').id(3);
 ```
-
+-->
 
 
 ## Default values
