@@ -61,11 +61,12 @@ Anchor.prototype.rules = {
 
 // Enforce that the data matches the specified ruleset
 // If it doesn't, throw an error.
-Anchor.prototype.to = function (ruleset, error) {
+// If the callback is specified, instead of throwing, use first arg
+Anchor.prototype.to = function (ruleset, cb) {
 	var self = this;
 
-	// If error is specififed, handle error instead of throwing it
-	if (error) self.errorFn = error;
+	// If callback is specififed, handle error instead of throwing it
+	if (cb) self.cb = cb;
 
 	// Use deep match to descend into the collection and verify each item and/or key
 	// Stop at default maxDepth (50) to prevent infinite loops in self-associations
@@ -146,8 +147,8 @@ Anchor.match = function match (datum, ruleName, ctx) {
 		else outcome = rule(datum);
 
 		// Return outcome or handle failure
-		if (!outcome) failure(datum,ruleName, outcome);
-		else return outcome;
+		if (!outcome) return failure(datum,ruleName, outcome);
+		else return success(outcome);
 	}
 	catch (e) {
 		failure(datum, ruleName, e);
@@ -155,12 +156,19 @@ Anchor.match = function match (datum, ruleName, ctx) {
 
 	function failure(datum, ruleName, err) {
 		// Allow .error() to handle the error instead of throwing it
-		if (ctx.errorFn) {
-			ctx.errorFn(err);
-			return err;
+		if (ctx.cb) {
+			ctx.cb(err);
+			return err || new Error ('Validation error: "'+datum+'" is not of type "'+ruleName+'"');
 		}
 		else if (err) throw new Error(err);
 		else throw new Error ('Validation error: "'+datum+'" is not of type "'+ruleName+'"');
+	}
+
+	function success(outcome) {
+		if (ctx.cb) {
+			return ctx.cb(null, outcome);
+		}
+		else return outcome;
 	}
 };
 
