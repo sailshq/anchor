@@ -1,7 +1,7 @@
 anchor
 ======
 
-> IMPORTANT: This is an **unfinished work in progress**!  Please follow/star and keep up to date as the project develops.
+> IMPORTANT: Anchor is under **active development**!  Please follow/star and keep up to date as the project develops.
 > If you're interested in contributing, drop me a note at @mikermcneil.  I welcome your feedback, ideas, and pull requests :)
 
 
