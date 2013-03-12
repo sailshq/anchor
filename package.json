@@ -1,6 +1,6 @@
 {
   "name": "anchor",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Recursive validation library with support for objects and lists",
   "main": "index.js",
   "directories": {
