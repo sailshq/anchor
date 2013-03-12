@@ -1,7 +1,7 @@
 var _ = require('underscore');
 var anchor = require('../index.js');
-var testRule = require('./testRule.js');
-
+var testRule = require('./util/testRule.js');
+var shouldFail = require('./util/shouldFail.js');
 
 
 describe('usage', function() {
@@ -48,12 +48,3 @@ describe('usage', function() {
 			shouldFail(cb));
 	});
 });
-
-
-// Return function which flip-flops error state of callback
-function shouldFail (cb) {
-	return function (err) {
-		if (!err) return cb('Should have thrown error!');
-		else return cb();
-	};
-}

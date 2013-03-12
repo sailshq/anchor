@@ -1,4 +1,4 @@
-var anchor = require('../index.js');
+var anchor = require('../../index.js');
 
 module.exports = function testRule(rule, example, nonexample) {
 	var err = false;
