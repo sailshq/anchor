@@ -1,5 +1,6 @@
 var _ = require('underscore');
 var anchor = require('../index.js');
+var testRule = require('./testRule.js');
 
 describe('error usage', function() {
 

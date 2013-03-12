@@ -1,6 +1,6 @@
 var _ = require('underscore');
-var check = require('validator').check;
 var sanitize = require('validator').sanitize;
+
 
 // Public access
 module.exports = function (entity) {
@@ -21,43 +21,7 @@ function Anchor (entity) {
 }
 
 // Built-in data type rules
-Anchor.prototype.rules = {
-	
-	'empty'		: function (x) { return x === ''; },
-	'undefined'	: _.isUndefined,
-
-	'string'	: _.isString,
-	'alpha'		: function (x){ return check(x).isAlpha();},
-	'numeric'	: function (x){ return check(x).isNumeric();},
-	'alphanumeric'	: function (x){ return check(x).isAlphanumeric();},
-	'email'		: function (x){ return check(x).isEmail();},
-	'url'		: function (x){ return check(x).isUrl();},
-	'urlish'	: /^\s([^\/]+\.)+.+\s*$/g,
-	'ip'		: function (x){ return check(x).isIP(); },
-	'creditcard': function (x){ return check(x).isCreditCard();},
-	'uuid'		: function (x, version){ return check(x).isUUID(version);},
-
-	'int'		: function (x) { return check(x).isInt(); },
-	'integer'	: function (x) { return check(x).isInt(); },
-	'number'	: _.isNumber,
-	'finite'	: _.isFinite,
-
-	'decimal'	: function (x) { return check(x).isDecimal(); },
-	'float'		: function (x) { return check(x).isDecimal(); },
-
-	'falsey'	: function (x) { return !x; },
-	'truthy'	: function (x) { return !!x; },
-	'null'		: _.isNull,
-
-	'boolean'	: _.isBoolean,
-
-	'array'		: _.isArray,
-
-	'date'		: _.isDate,
-	'after'		: function (x,date) { return check(x).isAfter(date); },
-	'before'	: function (x,date) { return check(x).isBefore(date); }
-
-};
+Anchor.prototype.rules = require('./rules');
 
 // Enforce that the data matches the specified ruleset
 // If it doesn't, throw an error.
@@ -65,12 +29,18 @@ Anchor.prototype.rules = {
 Anchor.prototype.to = function (ruleset, cb) {
 	var self = this;
 
-	// If callback is specififed, handle error instead of throwing it
+	// If callback is specififed, trigger it at the end
+	// also, handle error instead of throwing it
 	if (cb) self.cb = cb;
 
 	// Use deep match to descend into the collection and verify each item and/or key
 	// Stop at default maxDepth (50) to prevent infinite loops in self-associations
-	return Anchor.deepMatch(self.data, ruleset, self);
+	Anchor.deepMatch(self.data, ruleset, self);
+
+	// If a callback was specified, trigger it
+	// If an error object was stowed away in the ctx, pass it along
+	// (otherwise we never should have made it this far, the error should have been thrown)
+	cb && cb(self.error);
 };
 
 // Coerce the data to the specified ruleset if possible
@@ -146,29 +116,30 @@ Anchor.match = function match (datum, ruleName, ctx) {
 		}
 		else outcome = rule(datum);
 
-		// Return outcome or handle failure
-		if (!outcome) return failure(datum,ruleName, outcome);
-		else return success(outcome);
+		// False outcome is a failure
+		if (!outcome) return failure(datum,ruleName);
+		else return outcome;
 	}
 	catch (e) {
-		failure(datum, ruleName, e);
+		failure(datum, ruleName);
 	}
 
-	function failure(datum, ruleName, err) {
-		// Allow .error() to handle the error instead of throwing it
-		if (ctx.cb) {
-			ctx.cb(err);
-			return err || new Error ('Validation error: "'+datum+'" is not of type "'+ruleName+'"');
-		}
-		else if (err) throw new Error(err);
-		else throw new Error ('Validation error: "'+datum+'" is not of type "'+ruleName+'"');
-	}
+	// On failure-- stop and get out.  
+	// If a cb was specified, call it with a first-arity error object. 
+	// Otherwise, throw an error.
+	function failure(datum, ruleName) {
 
-	function success(outcome) {
+		// Construct error
+		var err = new Error ('Validation error: "'+datum+'" is not of type "'+ruleName+'"');
+
+		// Handle the error in callback instead of throwing it
 		if (ctx.cb) {
-			return ctx.cb(null, outcome);
+			ctx.error = err;
+			return false;
 		}
-		else return outcome;
+
+		// Or throw error if there was no callback
+		else throw err;
 	}
 };
 
@@ -196,9 +167,7 @@ Anchor.deepMatch = function deepMatch (data, ruleset, ctx, depth, maxDepth) {
 		}
 		
 		// Handle plurals (arrays with a schema rule)
-		else return _.all(data, function (model) {
-			return Anchor.deepMatch(model, ruleset[0], ctx, depth+1);
-		});
+		return _.all(data, matchArray);
 	}
 
 	// If the current rule is an object, check each key
@@ -208,13 +177,24 @@ Anchor.deepMatch = function deepMatch (data, ruleset, ctx, depth, maxDepth) {
 		if (_.keys(ruleset).length === 0) {
 			return Anchor.match(data, ruleset, ctx);
 		}
-		else return _.all(ruleset,function(subRule,key) {
-			return Anchor.deepMatch(data[key], ruleset[key], ctx, depth+1);
-		});
+		else return _.all(ruleset,matchDict);
 	}
 
 	// Leaf rules land here and execute the iterator
 	else return Anchor.match(data, ruleset, ctx);
+
+
+	// Iterate through rules in dictionary until error is detected
+	function matchDict(subRule,key) {
+		if (ctx && ctx.error) return false;
+		else return Anchor.deepMatch(data[key], ruleset[key], ctx, depth+1);
+	}
+
+	// Match each object in array against ruleset until error is detected
+	function matchArray(model) {
+		if (ctx && ctx.error) return false;
+		else return Anchor.deepMatch(model, ruleset[0], ctx, depth+1);
+	}
 };
 
 function todo() {
