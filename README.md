@@ -80,6 +80,7 @@ anchor(userData).to(requirements);
 
 ```
 
+<!--
 ## Custom rules
 
 Anchor also supports custom validation rules.
@@ -154,7 +155,7 @@ anchor(userData).to({
 });
 ```
 
-<!--
+
 ## Functions
 
 > TODO: Support for functions is incomplete.  If you'd like to contribute, please reach out at @balderdashy!
