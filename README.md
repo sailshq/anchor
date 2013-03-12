@@ -41,10 +41,10 @@ var userData = 'some string';
 // If it's not, an error will be thrown
 userData = anchor(userData).to('string');
 
-// If you want to handle the error instead of throwing it, add .error
-anchor('something').to("string").error(function (err) {
+// If you want to handle the error instead of throwing it, use a callback
+anchor('something').to("string", function (err) {
   // Err is an error object with a subset of the original data that didn't pass
-  // Specifying .error will prevent an error from being thrown
+  // Specifying a callback will prevent an error from being thrown
 });
 
 ```
@@ -174,13 +174,13 @@ $.get = anchor($.get).usage(
 // The following usage will throw an error because agasdg is not urlish
 $.get('agasdg', {}, function (){})
 
-// You can use the same .error notation from above in your definition to handle the error yourself
+// You can use the same callback from above in your definition to handle the error yourself
 $.get = anchor($.get).usage(
   ['urlish',{}, 'function'],
   ['urlish','function'],
   ['urlish',{}],
-  ['urlish']
-).error(function (err) {
+  ['urlish'],
+  function (err) {
   // Do something about the error here
 });
 ```
