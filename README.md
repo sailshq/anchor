@@ -154,7 +154,7 @@ anchor(userData).to({
 });
 ```
 
-
+<!--
 ## Functions
 
 > TODO: Support for functions is incomplete.  If you'd like to contribute, please reach out at @balderdashy!
@@ -230,15 +230,6 @@ $.getById('/user',3,cb);
 $.getById('/user',3);
 ```
 
-<!--
-> The api will have to change a bit here, so omitting this part for now.
-
-Or even use deferred object notation!
-```
-$.getById.url('/user').id(3).done(cb);
-$.getById('/user').id(3);
-```
--->
 
 
 ## Default values
@@ -432,6 +423,8 @@ var User = {
 module.exports = User;
 
 ```
+
+-->
 
 ## Tests
 ```
