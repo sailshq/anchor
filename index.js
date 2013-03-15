@@ -49,8 +49,41 @@ Anchor.prototype.cast = function (ruleset) {
 };
 
 // Coerce the data to the specified ruleset no matter what
-Anchor.prototype.hurl = function (ruleset) {
-	todo();
+Anchor.prototype.hurl = function (ruleset, cb) {
+	// If callback is specififed, trigger it at the end
+	// also, handle error instead of throwing it
+	if (cb) this.cb = cb;
+
+	// Iterate trough given data attributes
+	// to check if they exists in the ruleset
+	for(var attr in this.data) {
+		if(this.data.hasOwnProperty(attr)) {
+
+			// If it doesnt...
+			if(!ruleset[attr]) {
+
+				// Declaring err here as error helpers live in match.js
+				var err = new Error('Validation error: Attribute \"' + attr + '\" is not in the ruleset.');
+
+				// If a callback has been passed pass the error there
+				if(typeof cb === 'function') {
+					return cb(err);
+				}
+
+				// Or just throw it
+				else throw err;
+			}
+		}
+	}
+
+	// Once we make sure that attributes match
+	// we can just proceed to deepMatch
+	Anchor.match(this.data, ruleset, this);
+
+	// If a callback was specified, trigger it
+	// If an error object was stowed away in the ctx, pass it along
+	// (otherwise we never should have made it this far, the error should have been thrown)
+	cb && cb(this.error);
 };
 
 // Specify default values to automatically populated when undefined
