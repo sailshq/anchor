@@ -25,9 +25,27 @@ Anchor.prototype.rules = require('./lib/rules');
 // Enforce that the data matches the specified ruleset
 Anchor.prototype.to = function (ruleset) {
 
-	// Use deep match to descend into the collection and verify each item and/or key
-	// Stop at default maxDepth (50) to prevent infinite loops in self-associations
-	var errors = Anchor.match(this.data, ruleset, this);
+	var errors = [];
+
+	// If ruleset doesn't contain any explicit rule keys,
+	// assume that this is a type
+
+
+	// Look for explicit rules
+	for (var rule in ruleset) {
+
+		if (rule === 'type') {
+			
+			// Use deep match to descend into the collection and verify each item and/or key
+			// Stop at default maxDepth (50) to prevent infinite loops in self-associations
+			errors = errors.concat(Anchor.match.type(this.data, ruleset['type']));
+		}
+
+		// Validate a non-type rule
+		else {
+		// 	errors = errors.concat(Anchor.match.rule(this.data, ruleset[rule]));
+		}
+	}
 
 	// If errors exist, return the list of them
 	if (errors.length) {
@@ -36,6 +54,7 @@ Anchor.prototype.to = function (ruleset) {
 
 	// No errors, so return false
 	else return false;
+
 };
 Anchor.prototype.hasErrors = Anchor.prototype.to;
 
@@ -47,10 +66,7 @@ Anchor.prototype.cast = function (ruleset) {
 };
 
 // Coerce the data to the specified ruleset no matter what
-Anchor.prototype.hurl = function (ruleset, cb) {
-	// If callback is specififed, trigger it at the end
-	// also, handle error instead of throwing it
-	if (cb) this.cb = cb;
+Anchor.prototype.hurl = function (ruleset) {
 
 	// Iterate trough given data attributes
 	// to check if they exists in the ruleset
@@ -63,13 +79,8 @@ Anchor.prototype.hurl = function (ruleset, cb) {
 				// Declaring err here as error helpers live in match.js
 				var err = new Error('Validation error: Attribute \"' + attr + '\" is not in the ruleset.');
 
-				// If a callback has been passed pass the error there
-				if(typeof cb === 'function') {
-					return cb(err);
-				}
-
-				// Or just throw it
-				else throw err;
+				// just throw it
+				throw err;
 			}
 		}
 	}
@@ -77,11 +88,6 @@ Anchor.prototype.hurl = function (ruleset, cb) {
 	// Once we make sure that attributes match
 	// we can just proceed to deepMatch
 	Anchor.match(this.data, ruleset, this);
-
-	// If a callback was specified, trigger it
-	// If an error object was stowed away in the ctx, pass it along
-	// (otherwise we never should have made it this far, the error should have been thrown)
-	cb && cb(this.error);
 };
 
 // Specify default values to automatically populated when undefined
