@@ -24,17 +24,17 @@ function withoutCallback(rule, example, nonexample) {
 	// Should be an array
 	nonexampleOutcome = anchor(nonexample).to(rule);
 
-	var err;
 	if (exampleOutcome) {
-		err = exampleOutcome;
+		return gotErrors(exampleOutcome);
 	}
 	if (!_.isArray(nonexampleOutcome)) {
-		err = 'Invalid input (' + nonexample + ') allowed through as a ' + rule + '.';
+		return gotErrors('Invalid input (' + nonexample + ') allowed through as a ' + rule + '.');
 	}
 	
-	if (err) {
+	function gotErrors (err) {
 		console.error('*****************');
 		console.error('err', err);
+		console.error('nonexampleOutcome', nonexampleOutcome);
 		console.error('nonexample', nonexample);
 		console.error('rule', rule);
 		throw new Error(err);
