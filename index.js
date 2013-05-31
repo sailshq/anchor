@@ -16,7 +16,6 @@ function Anchor (entity) {
 	}
 	else this.data = entity;
 
-
 	return this;
 }
 
@@ -24,23 +23,22 @@ function Anchor (entity) {
 Anchor.prototype.rules = require('./lib/rules');
 
 // Enforce that the data matches the specified ruleset
-// If it doesn't, throw an error.
-// If the callback is specified, instead of throwing, use first arg
-Anchor.prototype.to = function (ruleset, cb) {
-
-	// If callback is specififed, trigger it at the end
-	// also, handle error instead of throwing it
-	if (cb) this.cb = cb;
+Anchor.prototype.to = function (ruleset) {
 
 	// Use deep match to descend into the collection and verify each item and/or key
 	// Stop at default maxDepth (50) to prevent infinite loops in self-associations
-	Anchor.match(this.data, ruleset, this);
+	var errors = Anchor.match(this.data, ruleset, this);
 
-	// If a callback was specified, trigger it
-	// If an error object was stowed away in the ctx, pass it along
-	// (otherwise we never should have made it this far, the error should have been thrown)
-	cb && cb(this.error);
+	// If errors exist, return the list of them
+	if (errors.length) {
+		return errors;
+	}
+
+	// No errors, so return false
+	else return false;
 };
+Anchor.prototype.hasErrors = Anchor.prototype.to;
+
 
 // Coerce the data to the specified ruleset if possible
 // otherwise throw an error

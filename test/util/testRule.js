@@ -1,37 +1,40 @@
+var _ = require('underscore');
 var anchor = require('../../index.js');
 var async = require('async');
 
-// Test a rule given an deliberate example and nonexample
+// Test a rule given a deliberate example and nonexample
 // Test WITH and WITHOUT callback
 module.exports = function testRule(rule, example, nonexample) {
 
 	// Throw an error if there's any trouble
 	// (not a good production usage pattern-- just here for testing)
 	withoutCallback(rule,example,nonexample);
-	withCallback(rule,example,nonexample);
+	// withCallback(rule,example,nonexample);
 
 };
 
 
 // Without callback
 function withoutCallback(rule, example, nonexample) {
-	var err = false;
+	var exampleOutcome, nonexampleOutcome;
 
-	// Should not throw error
-	anchor(example).to(rule);
-	
-	// Should throw error
-	try {
-		anchor(nonexample).to(rule);
+	// Should be falsy
+	exampleOutcome = anchor(example).to(rule);
 
-		// Should never reach here
-		err = 'Invalid input (' + nonexample + ') allowed through as a ' + rule + '.';
-	} catch(e) {
-		return true;
+	// Should be an array
+	nonexampleOutcome = anchor(nonexample).to(rule);
+
+	var err;
+	if (exampleOutcome) {
+		err = exampleOutcome;
 	}
-
-	if(err) {
+	if (!_.isArray(nonexampleOutcome)) {
+		err = 'Invalid input (' + nonexample + ') allowed through as a ' + rule + '.';
+	}
+	
+	if (err) {
 		console.error('*****************');
+		console.error('err', err);
 		console.error('nonexample', nonexample);
 		console.error('rule', rule);
 		throw new Error(err);
