@@ -1,11 +1,11 @@
 var _ = require('underscore');
 var anchor = require('../index.js');
-var testRule = require('./util/testRule.js');
+var testType = require('./util/testType.js');
 
 describe('arrays', function() {
 
 	it(' should properly support both flavors of basic array validation rules', function() {
-		testRule({
+		testType({
 			name: 'string',
 			id: 'numeric',
 			friends: [],
@@ -30,7 +30,7 @@ describe('arrays', function() {
 
 
 	it(' should properly parse lists defined with schema rule ', function() {
-		testRule({
+		testType({
 			name: 'string',
 			id: 'numeric',
 
@@ -67,7 +67,7 @@ describe('arrays', function() {
 	});
 
 	it(' should properly parse more complex lists defined with schema rule ', function() {
-		testRule({
+		testType({
 			name: 'string',
 			id: 'numeric',
 
@@ -107,7 +107,7 @@ describe('arrays', function() {
 
 
 	it(' should properly parse top-level lists ', function() {
-		testRule([{
+		testType([{
 			name: 'string',
 			id: 'int'
 		}], [{

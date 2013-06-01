@@ -43,7 +43,7 @@ Anchor.prototype.to = function (ruleset) {
 
 		// Validate a non-type rule
 		else {
-		// 	errors = errors.concat(Anchor.match.rule(this.data, ruleset[rule]));
+			errors = errors.concat(Anchor.match.rule(this.data, rule, ruleset[rule]));
 		}
 	}
 

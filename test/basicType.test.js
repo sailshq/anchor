@@ -1,6 +1,6 @@
 var _ = require('underscore');
 var anchor = require('../index.js');
-var testRule = require('./util/testRule.js');
+var testType = require('./util/testType.js');
 
 
 
@@ -13,50 +13,50 @@ describe('basic rules', function() {
 
 	describe ('falsey values',function () {
 		it (' should support "empty" rule ', function () {
-			return testRule('empty','','foo');
+			return testType('empty','','foo');
 		});
 
 		it (' should support "undefined" rule ', function () {
-			return testRule('undefined',undefined,'foo');
+			return testType('undefined',undefined,'foo');
 		});
 
 		it (' "null" rule should not work with undefined ', function () {
-			return testRule('null',null,undefined);
+			return testType('null',null,undefined);
 		});
 
 		it (' "null" rule should not work with empty string ', function () {
-			return testRule('null',null,'');
+			return testType('null',null,'');
 		});
 
 		it (' "falsey" rule should correctly identify falsy values ', function () {
-			return testRule('falsey','','whatever');
+			return testType('falsey','','whatever');
 		});
 		it (' "falsey" rule should correctly identify falsy values ', function () {
-			return testRule('falsey',null,'whatever');
+			return testType('falsey',null,'whatever');
 		});
 		it (' "falsey" rule should correctly identify falsy values ', function () {
-			return testRule('falsey',undefined,'whatever');
+			return testType('falsey',undefined,'whatever');
 		});
 		it (' "falsey" rule should correctly identify falsy values ', function () {
-			return testRule('falsey',0,'whatever');
+			return testType('falsey',0,'whatever');
 		});
 		it (' "falsey" rule should correctly identify falsy values ', function () {
-			return testRule('falsey',false,'whatever');
+			return testType('falsey',false,'whatever');
 		});
 	});
 
 	describe('strings', function () {
 
 		it (' should support "string" rule ', function () {
-			return testRule('string','foo',22482);
+			return testType('string','foo',22482);
 		});
 
 		it (' should support "email" rule ', function () {
-			return testRule('email','fox.and.the.hound@theforest.com','foo');
+			return testType('email','fox.and.the.hound@theforest.com','foo');
 		});
 
 		it (' should support "email" rule ', function () {
-			return testRule('email','fox.and.the.hound@theforest.com','foo');
+			return testType('email','fox.and.the.hound@theforest.com','foo');
 		});
 
 	});
@@ -65,15 +65,15 @@ describe('basic rules', function() {
 	describe('numbers', function() {
 
 		it (' "finite" should identify integers and reject NaN ', function () {
-			return testRule('finite',3,NaN);
+			return testType('finite',3,NaN);
 		});
 
 		it (' "number" should identify NaN ', function () {
-			return testRule('number',NaN,'foo');
+			return testType('number',NaN,'foo');
 		});
 
 		it (' "number" should identify integers ', function () {
-			return testRule('number',28235,'foo');
+			return testType('number',28235,'foo');
 		});
 	});
 

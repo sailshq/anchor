@@ -1,11 +1,11 @@
 var _ = require('underscore');
 var anchor = require('../index.js');
-var testRule = require('./util/testRule.js');
+var testType = require('./util/testType.js');
 
 describe('objects', function() {
 
 	it(' should properly validate a simple object', function() {
-		testRule({
+		testType({
 			name: 'string'
 		}, {
 			name: 'Rachael'
@@ -15,7 +15,7 @@ describe('objects', function() {
 	});
 
 	it(' should properly validate another simple object', function() {
-		testRule({
+		testType({
 			name: 'string',
 			id: 'numeric'
 		}, {
@@ -28,7 +28,7 @@ describe('objects', function() {
 	});
 
 	it(' should ignore unspecified attribute', function() {
-		testRule({
+		testType({
 			name: 'string',
 			id: 'numeric'
 		}, {
@@ -42,7 +42,7 @@ describe('objects', function() {
 	});
 
 	it(' should properly validate nested objects', function() {
-		testRule({
+		testType({
 			name: 'string',
 			id: 'numeric',
 			friend: {
@@ -77,7 +77,7 @@ describe('objects', function() {
 	});
 
 	it(' should handle anonymous object type ', function() {
-		testRule({
+		testType({
 			name: 'string',
 			id: 'numeric',
 

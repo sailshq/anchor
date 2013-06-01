@@ -4,7 +4,7 @@ var async = require('async');
 
 // Test a rule given a deliberate example and nonexample
 // Test WITH and WITHOUT callback
-module.exports = function testType(rule, example, nonexample) {
+module.exports = function testType (rule, example, nonexample) {
 
 	// Throw an error if there's any trouble
 	// (not a good production usage pattern-- just here for testing)
