@@ -20,6 +20,6 @@ describe('miscellaneous rules', function() {
 				before: new Date()
 			},new Date(Date.now() - 100000),new Date(Date.now() + 1000000));
 		});
-	});\
+	});
 
 });
