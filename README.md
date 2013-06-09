@@ -31,6 +31,8 @@ It's also the core validation library for the Sails ecosystem.
 npm install anchor
 ```
 
+<!--
+
 ## Basic Usage
 ```javascript
 var anchor = require('anchor');
@@ -79,6 +81,8 @@ var userData = {
 anchor(userData).to(requirements);
 
 ```
+
+-->
 
 <!--
 ## Custom rules
