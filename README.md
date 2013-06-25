@@ -1,10 +1,6 @@
 anchor
 ======
 
-> IMPORTANT: Anchor is under **active development**!  Please follow/star and keep up to date as the project develops.
-> If you're interested in contributing, drop me a note at @mikermcneil.  I welcome your feedback, ideas, and pull requests :)
-
-
 Anchor is a javascript library that lets you define strict types.  It also helps you validate and normalize the usage of command line scripts and even individual functions.
 
 This makes it really useful for things like:
