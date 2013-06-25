@@ -1,7 +1,7 @@
 anchor
 ======
 
-Anchor is a javascript library that lets you define strict types.  It also helps you validate and normalize the usage of command line scripts and even individual functions.
+Anchor is a javascript library that lets you define strict types.  /* err todo: It also helps you validate and normalize the usage of command line scripts and even individual functions. */
 
 This makes it really useful for things like:
 + Form validation on the client or server
