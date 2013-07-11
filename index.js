@@ -35,7 +35,7 @@ Anchor.prototype.to = function (ruleset) {
 	for (var rule in ruleset) {
 
 		if (rule === 'type') {
-			
+
 			// Use deep match to descend into the collection and verify each item and/or key
 			// Stop at default maxDepth (50) to prevent infinite loops in self-associations
 			errors = errors.concat(Anchor.match.type(this.data, ruleset['type']));
