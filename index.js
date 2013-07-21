@@ -95,9 +95,27 @@ Anchor.prototype.defaults = function (ruleset) {
 	todo();
 };
 
-// Declare name of custom data type
-Anchor.prototype.define = function (name) {
-	todo();
+
+// Declare a custom data type
+Anchor.prototype.define = function (name, definition) {
+
+	//check to see if we have an dictionary
+	if(_.isObject(name)){
+		//if so all the attributes should be validation functions
+		for(var attr in name){
+			if(!_.isFunction(name[attr])){
+				throw new Error('Definition error: \"' + attr + '\" does not have a definition');
+			}
+		}
+		//add the new custom data types
+		_.extend(this.rules, name);
+	}else if(_.isFunction(definition)){
+		//add a single data type
+		this.rules[name] = definition;
+	}else{
+		throw new Error('Definition error: \"' + name + '\" does not have a definition');
+	}
+	return this;
 };
 
 // Specify custom ruleset
