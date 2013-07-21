@@ -3,7 +3,7 @@ var sanitize = require('validator').sanitize;
 
 
 // Public access
-module.exports = function (entity) {
+AnchorConstructor = function (entity) {
 	return new Anchor(entity);
 };
 
@@ -108,10 +108,10 @@ Anchor.prototype.define = function (name, definition) {
 			}
 		}
 		//add the new custom data types
-		_.extend(this.rules, name);
+		_.extend(Anchor.prototype.rules, name);
 	}else if(_.isFunction(definition)){
 		//add a single data type
-		this.rules[name] = definition;
+		Anchor.prototype.rules[name] = definition;
 	}else{
 		throw new Error('Definition error: \"' + name + '\" does not have a definition');
 	}
@@ -141,3 +141,8 @@ Anchor.match = require('./lib/match.js');
 function todo() {
 	throw new Error("Not implemented yet! If you'd like to contribute, tweet @mikermcneil.");
 }
+
+//expose `define` so it can be used globally
+AnchorConstructor.define = Anchor.prototype.define;
+
+module.exports = AnchorConstructor;
