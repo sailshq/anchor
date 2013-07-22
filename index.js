@@ -1,16 +1,32 @@
-var _ = require('underscore');
+/**
+ * Module dependencies
+ */
+
+var util = require('underscore');
 var sanitize = require('validator').sanitize;
 
 
-// Public access
-AnchorConstructor = function (entity) {
+
+
+/**
+ * Public access
+ */
+
+module.exports = function (entity) {
 	return new Anchor(entity);
 };
 
 
-// Specify the function, object, or list to be anchored
+
+
+
+/**
+ * Constructor of individual instance of Anchor
+ * Specify the function, object, or list to be anchored
+ */
+
 function Anchor (entity) {
-	if (_.isFunction(entity)) {
+	if (util.isFunction(entity)) {
 		this.fn = entity;
 		throw new Error ('Anchor does not support functions yet!');
 	}
@@ -19,10 +35,24 @@ function Anchor (entity) {
 	return this;
 }
 
-// Built-in data type rules
+
+
+
+
+/**
+ * Built-in data type rules
+ */
+
 Anchor.prototype.rules = require('./lib/rules');
 
-// Enforce that the data matches the specified ruleset
+
+
+
+
+/**
+ * Enforce that the data matches the specified ruleset
+ */
+
 Anchor.prototype.to = function (ruleset) {
 
 	var errors = [];
@@ -59,22 +89,61 @@ Anchor.prototype.to = function (ruleset) {
 Anchor.prototype.hasErrors = Anchor.prototype.to;
 
 
-// Coerce the data to the specified ruleset if possible
-// otherwise throw an error
+
+
+
+/**
+ * Coerce the data to the specified ruleset if possible
+ * otherwise throw an error
+ * Priority: this should probably provide the default 
+ * implementation in Waterline core.  Currently it's completely
+ * up to the adapter to define type coercion.
+ *
+ * Which is fine!.. but complicates custom CRUD adapter development.
+ * Much handier would be an evented architecture, that allows
+ * for adapter developers to write:
+ *
+	{
+		// Called before find() receives criteria
+		// Here, criteria refers to just attributes (the `where`)
+		// limit, skip, and sort are not included
+		coerceCriteria: function (criteria) {
+			return criteria;
+		},
+
+		// Called before create() or update() receive values
+		coerceValues: function () {}
+
+	}
+ *
+ * Adapter developers would be able to use Anchor.prototype.cast()
+ * to declaritively define these type coercions.
+	
+ * Down the line, we could take this further for an even nicer API,
+ * but for now, this alone would be a nice improvement.
+ *
+ */
+
 Anchor.prototype.cast = function (ruleset) {
 	todo();
 };
 
-// Coerce the data to the specified ruleset no matter what
+
+
+
+/**
+ * Coerce the data to the specified ruleset no matter what
+ */
+
 Anchor.prototype.hurl = function (ruleset) {
 
 	// Iterate trough given data attributes
-	// to check if they exists in the ruleset
-	for(var attr in this.data) {
-		if(this.data.hasOwnProperty(attr)) {
+	// to check if they exist in the ruleset
+	for (var attr in this.data) {
+		if (this.data.hasOwnProperty(attr)) {
 
 			// If it doesnt...
-			if(!ruleset[attr]) {
+			if (!ruleset[attr]) {
 
 				// Declaring err here as error helpers live in match.js
 				var err = new Error('Validation error: Attribute \"' + attr + '\" is not in the ruleset.');
@@ -90,59 +159,121 @@ Anchor.prototype.hurl = function (ruleset) {
 	Anchor.match(this.data, ruleset, this);
 };
 
-// Specify default values to automatically populated when undefined
+
+
+
+
+/**
+ * Specify default values to automatically populated when undefined
+ */
+
 Anchor.prototype.defaults = function (ruleset) {
 	todo();
 };
 
 
-// Declare a custom data type
+
+
+
+/**
+ * Declare a custom data type
+ * If function definition is specified, `name` is required.
+ * Otherwise, if dictionary-type `definition` is specified,
+ * `name` must not be present.
+ *
+ * @param {String} name				[optional]
+ * @param {Object|Function}	definition
+ */
+
 Anchor.prototype.define = function (name, definition) {
 
-	//check to see if we have an dictionary
-	if(_.isObject(name)){
-		//if so all the attributes should be validation functions
-		for(var attr in name){
-			if(!_.isFunction(name[attr])){
+	// check to see if we have an dictionary
+	if ( util.isObject(name) ) {
+		
+		// if so all the attributes should be validation functions
+		for (var attr in name){
+			if(!util.isFunction(name[attr])){
 				throw new Error('Definition error: \"' + attr + '\" does not have a definition');
 			}
 		}
-		//add the new custom data types
-		_.extend(Anchor.prototype.rules, name);
-	}else if(_.isFunction(definition)){
-		//add a single data type
-		Anchor.prototype.rules[name] = definition;
-	}else{
-		throw new Error('Definition error: \"' + name + '\" does not have a definition');
+
+		// add the new custom data types
+		util.extend(Anchor.prototype.rules, name);
+
+		return this;
+
 	}
-	return this;
+
+	if ( util.isFunction(definition) && util.isString(name) ) {
+
+		// Add a single data type
+		Anchor.prototype.rules[name] = definition;
+
+		return this;
+
+	}
+	
+	throw new Error('Definition error: \"' + name + '\" is not a valid definition.');
 };
 
-// Specify custom ruleset
+
+
+
+
+/**
+ * Specify custom ruleset
+ */
+
 Anchor.prototype.as = function (ruleset) {
 	todo();
 };
 
 
-// Specify named arguments and their rulesets as an object
+
+
+/**
+ * Specify named arguments and their rulesets as an object
+ */
+
 Anchor.prototype.args = function (args) {
 	todo();
 };
 
-// Specify each of the permitted usages for this function
+
+
+
+/**
+ * Specify each of the permitted usages for this function
+ */
+
 Anchor.prototype.usage = function () {
-	var usages = _.toArray(arguments);
+	var usages = util.toArray(arguments);
 	todo();
 };
 
-// Deep-match a complex collection or model against a schema
+
+
+
+/**
+ * Deep-match a complex collection or model against a schema
+ */
+
 Anchor.match = require('./lib/match.js');
 
+
+
+
+
+/**
+ * Expose `define` so it can be used globally
+ */ 
+
+module.exports.define = Anchor.prototype.define;
+
+
+
+
+
 function todo() {
-	throw new Error("Not implemented yet! If you'd like to contribute, tweet @mikermcneil.");
+	throw new Error('Not implemented yet! If you\'d like to contribute, tweet @mikermcneil.');
 }
-
-//expose `define` so it can be used globally
-AnchorConstructor.define = Anchor.prototype.define;
-
-module.exports = AnchorConstructor;
