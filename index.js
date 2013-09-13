@@ -2,7 +2,7 @@
  * Module dependencies
  */
 
-var util = require('underscore');
+var util = require('lodash');
 var sanitize = require('validator').sanitize;
 
 
@@ -95,7 +95,7 @@ Anchor.prototype.hasErrors = Anchor.prototype.to;
 /**
  * Coerce the data to the specified ruleset if possible
  * otherwise throw an error
- * Priority: this should probably provide the default 
+ * Priority: this should probably provide the default
  * implementation in Waterline core.  Currently it's completely
  * up to the adapter to define type coercion.
  *
@@ -118,7 +118,7 @@ Anchor.prototype.hasErrors = Anchor.prototype.to;
  *
  * Adapter developers would be able to use Anchor.prototype.cast()
  * to declaritively define these type coercions.
-	
+
  * Down the line, we could take this further for an even nicer API,
  * but for now, this alone would be a nice improvement.
  *
@@ -189,7 +189,7 @@ Anchor.prototype.define = function (name, definition) {
 
 	// check to see if we have an dictionary
 	if ( util.isObject(name) ) {
-		
+
 		// if so all the attributes should be validation functions
 		for (var attr in name){
 			if(!util.isFunction(name[attr])){
@@ -212,7 +212,7 @@ Anchor.prototype.define = function (name, definition) {
 		return this;
 
 	}
-	
+
 	throw new Error('Definition error: \"' + name + '\" is not a valid definition.');
 };
 
@@ -266,7 +266,7 @@ Anchor.match = require('./lib/match.js');
 
 /**
  * Expose `define` so it can be used globally
- */ 
+ */
 
 module.exports.define = Anchor.prototype.define;
 
