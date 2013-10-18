@@ -19,12 +19,12 @@ It's also the core validation library for the Sails ecosystem.
 ## Installation
 
 ### Client-side
-```
+```html
 <script type='text/javscript' src="/js/anchor.js"></script>
 ```
 
 ### node.js
-```
+```bash
 npm install anchor
 ```
 
