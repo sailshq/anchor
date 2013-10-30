@@ -47,16 +47,16 @@ describe('Custom Types', function() {
 	});
 
 	describe('Context', function() {
-	  it(' should support providing context for rules via',function () {
-	    var user = { password: 'passW0rd', passwordConfirmation: 'passW0rd' };
+		it(' should support providing context for rules via',function () {
+			var user = { password: 'passW0rd', passwordConfirmation: 'passW0rd' };
 
-	    anchor.define('password', function (password) {
-	      return password === this.passwordConfirmation;
-	    });
+			anchor.define('password', function (password) {
+				return password === this.passwordConfirmation;
+			});
 
-	    var outcome = anchor(user.password).to({ type: 'password' }, user);
+			var outcome = anchor(user.password).to({ type: 'password' }, user);
 
-	    assert.equal(false, outcome);
-	  });
+			assert.equal(false, outcome);
+		});
 	});
 });
