@@ -53,7 +53,7 @@ Anchor.prototype.rules = require('./lib/rules');
  * Enforce that the data matches the specified ruleset
  */
 
-Anchor.prototype.to = function (ruleset) {
+Anchor.prototype.to = function (ruleset, context) {
 
 	var errors = [];
 
@@ -68,12 +68,12 @@ Anchor.prototype.to = function (ruleset) {
 
 			// Use deep match to descend into the collection and verify each item and/or key
 			// Stop at default maxDepth (50) to prevent infinite loops in self-associations
-			errors = errors.concat(Anchor.match.type(this.data, ruleset['type']));
+			errors = errors.concat(Anchor.match.type.call(context, this.data, ruleset['type']));
 		}
 
 		// Validate a non-type rule
 		else {
-			errors = errors.concat(Anchor.match.rule(this.data, rule, ruleset[rule]));
+			errors = errors.concat(Anchor.match.rule.call(context, this.data, rule, ruleset[rule]));
 		}
 	}
 

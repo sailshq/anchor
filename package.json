@@ -20,5 +20,8 @@
     "validator": "~1.5.1",
     "lodash": "~2.2.1",
     "async": "0.2.9"
+  },
+  "devDependencies": {
+    "mocha": "1.9.x"
   }
 }
