@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 var anchor = require('../index.js');
 var async = require('async');
 var assert = require("assert");
@@ -13,7 +13,7 @@ describe('Custom Types', function() {
 			example = {
 				houseNumber: 5
 			},
-			
+
 			isfive = function(val){
 				return val === 5;
 			};
