@@ -17,7 +17,7 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "validator": "~1.5.1",
+    "validator": "~2.0.0",
     "lodash": "~2.2.1",
     "async": "0.2.9"
   }
