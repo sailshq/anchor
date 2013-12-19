@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('lodash');
 var anchor = require('../index.js');
 var testRules = require('./util/testRules.js');
 
