@@ -20,10 +20,10 @@ module.exports = function testRules (rules, example, nonexample) {
 		return gotErrors('Valid input marked with error!', exampleOutcome, example);
 	}
 	if (!_.isArray(nonexampleOutcome)) {
-		return gotErrors('Invalid input (' + nonexample + ') allowed through.', 
+		return gotErrors('Invalid input (' + nonexample + ') allowed through.',
 			rules, nonexample);
 	}
-	
+
 	function gotErrors (errMsg, err, data) {
 		console.error(err);
 		console.error(data);

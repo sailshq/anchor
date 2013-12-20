@@ -13,7 +13,7 @@ describe('Custom Types', function() {
 			example = {
 				houseNumber: 5
 			},
-			
+
 			isfive = function(val){
 				return val === 5;
 			};
