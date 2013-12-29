@@ -192,7 +192,7 @@ Anchor.prototype.define = function (name, definition) {
 
 		// if so all the attributes should be validation functions
 		for (var attr in name){
-			if(!util.isFunction(name[attr])){
+			if(!util.isFunction(name[attr].validate)){
 				throw new Error('Definition error: \"' + attr + '\" does not have a definition');
 			}
 		}
@@ -204,7 +204,7 @@ Anchor.prototype.define = function (name, definition) {
 
 	}
 
-	if ( util.isFunction(definition) && util.isString(name) ) {
+	if ( util.isFunction(definition.validate) && util.isString(name) ) {
 
 		// Add a single data type
 		Anchor.prototype.rules[name] = definition;

@@ -14,8 +14,11 @@ describe('Custom Types', function() {
 				houseNumber: 5
 			},
 
-			isfive = function(val){
-				return val === 5;
+			isfive = {
+				validate: function(val){
+					return val === 5;
+				},
+				message: "{0} should be equal to 5."
 			};
 
 			assert.equal(false, anchor(example).define("five", isfive).to({type:rules}));
@@ -34,11 +37,17 @@ describe('Custom Types', function() {
 			},
 
 			definition = {
-				five: function(val){
-					return val === 5;
+				five: {
+					validate: function(val){
+						return val === 5;
+					},
+					message: "{0} should be equal to 5."
 				},
-				yummyFish: function(val){
-					return val === "tuna";
+				yummyFish: {
+					validate: function(val){
+						return val === "tuna";
+					},
+					message: "{0} should be equal to tuna."
 				}
 			};
 
@@ -50,8 +59,11 @@ describe('Custom Types', function() {
 		it(' should support providing context for rules via',function () {
 			var user = { password: 'passW0rd', passwordConfirmation: 'passW0rd' };
 
-			anchor.define('password', function (password) {
-				return password === this.passwordConfirmation;
+			anchor.define('password', {
+				validate: function (password) {
+					return password === this.passwordConfirmation;
+				},
+				message: "{0} should equals the confirmation."
 			});
 
 			var outcome = anchor(user.password).to({ type: 'password' }, user);
