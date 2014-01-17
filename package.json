@@ -2,6 +2,20 @@
   "name": "anchor",
   "version": "0.9.7",
   "description": "Recursive validation library with support for objects and lists",
+  "homepage": "http://sailsjs.com",
+  "keywords": [
+    "validation",
+    "recursive-validator",
+    "nested",
+    "validator",
+    "strict-types",
+    "web-framework",
+    "type-coercion",
+    "waterline",
+    "validate-parameters",
+    "sails.js",
+    "sails"
+  ],
   "main": "index.js",
   "directories": {
     "test": "test"
