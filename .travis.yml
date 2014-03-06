@@ -22,5 +22,6 @@ notifications:
 branches:
   only:
     - master
+    - 0.10.beta
     - stable
     - beta
