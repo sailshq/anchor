@@ -43,7 +43,7 @@ function Anchor (entity) {
  * Built-in data type rules
  */
 
-Anchor.prototype.rules = require('./lib/rules');
+Anchor.prototype.rules = require('./lib/match/rules');
 
 
 
@@ -258,7 +258,7 @@ Anchor.prototype.usage = function () {
  * Deep-match a complex collection or model against a schema
  */
 
-Anchor.match = require('./lib/match.js');
+Anchor.match = require('./lib/match');
 
 
 
