@@ -68,7 +68,7 @@ Anchor.prototype.to = function (ruleset, context) {
 
 			// Use deep match to descend into the collection and verify each item and/or key
 			// Stop at default maxDepth (50) to prevent infinite loops in self-associations
-			errors = errors.concat(Anchor.match.type.call(context, this.data, ruleset['type']));
+			errors = errors.concat(Anchor.match.schema.call(context, this.data, ruleset['type']));
 		}
 
 		// Validate a non-type rule
