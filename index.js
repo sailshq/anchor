@@ -54,28 +54,35 @@ Anchor.prototype.rules = require('./lib/match/rules');
  */
 
 Anchor.prototype.to = function (ruleset, context) {
+  "use strict";
 
-	var errors = [];
+	var errors = [], self = this;
 
 	// If ruleset doesn't contain any explicit rule keys,
 	// assume that this is a type
 
+  if (util.isPlainObject(ruleset)) {
 
-	// Look for explicit rules
-	for (var rule in ruleset) {
+    if (util.has(ruleset, 'type') && util.keys(ruleset).length == 1) {
+      // backward compatible for anchor(data).to({ type: typeDef })
+      errors = errors.concat(Anchor.match.type.call(context, self.data, ruleset['type']));
+    } else if (util.difference(util.keys(ruleset), util.keys(this.rules)).length === 0) {
+      // backward compatible for anchor(data).to({ ruleName: ruleArgs  })
+      // Look for explicit rules
+      util.forOwn(ruleset, function (args, ruleName) {
+        // Validate a non-type rule
+        errors = errors.concat(Anchor.match.rule.call(context, self.data, ruleName, args));
+      });
+    } else {
+      // Use deep match to descend into the collection and verify each item and/or key
+      // Stop at default maxDepth (50) to prevent infinite loops in self-associations
+      errors = errors.concat(Anchor.match.schema.call(context, self.data, ruleset));
+    }
+  } else {
+    errors = errors.concat(Anchor.match.rule.call(context, self.data, ruleset.toString(), ruleset));
+  }
 
-		if (rule === 'type') {
 
-			// Use deep match to descend into the collection and verify each item and/or key
-			// Stop at default maxDepth (50) to prevent infinite loops in self-associations
-			errors = errors.concat(Anchor.match.schema.call(context, this.data, ruleset['type']));
-		}
-
-		// Validate a non-type rule
-		else {
-			errors = errors.concat(Anchor.match.rule.call(context, this.data, rule, ruleset[rule]));
-		}
-	}
 
 	// If errors exist, return the list of them
 	if (errors.length) {
@@ -186,19 +193,21 @@ Anchor.prototype.defaults = function (ruleset) {
  */
 
 Anchor.prototype.define = function (name, definition) {
+  "use strict";
 
 	// check to see if we have an dictionary
-	if ( util.isObject(name) ) {
+	if ( util.isPlainObject(name) && definition === undefined ) {
+    definition = name;
 
 		// if so all the attributes should be validation functions
-		for (var attr in name){
-			if(!util.isFunction(name[attr])){
-				throw new Error('Definition error: \"' + attr + '\" does not have a definition');
-			}
-		}
+    util.forOwn(definition, function (value, attr) {
+      if(!util.isFunction(value)) {
+        throw new Error('Definition error: \"' + attr + '\" does not have a definition');
+      }
+    });
 
 		// add the new custom data types
-		util.extend(Anchor.prototype.rules, name);
+		util.extend(Anchor.prototype.rules, definition);
 
 		return this;
 
