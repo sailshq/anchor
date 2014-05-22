@@ -14,6 +14,29 @@ describe('miscellaneous rules', function() {
 		});
 	});
 
+        describe ('greaterThan/lessThan',function () {
+                it (' should support "greaterThan" rule ', function () {
+                        return testRules({
+                                greaterThan: 3.5
+                        },4,3);
+                });
+                it (' should support "greaterThan" rule ', function () {
+                        return testRules({
+                                greaterThan: 3.5
+                        },3.6,3.5);
+                });
+                it (' should support "lessThan" rule ', function () {
+                        return testRules({
+                                lessThan: 3.5
+                        },3,4);
+                });
+                it (' should support "lessThan" rule ', function () {
+                        return testRules({
+                                lessThan: 3.5
+                        },3.4,3.5);
+                });
+        });
+
 	describe('before/after date', function () {
 		it (' should support "before" rule ', function () {
 			return testRules({
