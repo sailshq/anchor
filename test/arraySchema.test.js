@@ -250,7 +250,7 @@ describe('Array Schema', function() {
     });
   });
 
-  it.only(' should properly handle no-array', function () {
+  it(' should properly handle no-array', function () {
     "use strict";
     testSchema({
       friends: [{ type: 'string', notEmpty: true }]
@@ -263,8 +263,7 @@ describe('Array Schema', function() {
     testSchema({
       friends: [{ type: 'string', notEmpty: true }]
     }, {
-//      friends: ['a', 'b', 'c']
-      friends: { name: 'Mike' }
+      friends: ['a', 'b', 'c']
     }, {
       friends: { name: 'Mike' }
     });
