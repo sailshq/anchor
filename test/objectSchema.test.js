@@ -303,7 +303,6 @@ describe('Object Schema', function() {
     });
 
     testSchema({
-      name: { type: 'string' },
       friend: {
         $validate: { required: true },
         id: { type: 'int', max: 3 }
@@ -311,7 +310,17 @@ describe('Object Schema', function() {
     }, {
       friend: { id: 2, name: 'Rachael', favoriteColor: 'red' }
     }, {
-      name: 'John'
+    });
+
+    testSchema({
+      friend: {
+        $validate: { required: true },
+        id: { type: 'int', max: 3, required: true }
+      }
+    }, {
+      friend: { id: 2, name: 'Rachael', favoriteColor: 'red' }
+    }, {
+      friend: 1
     });
   });
 
@@ -324,6 +333,22 @@ describe('Object Schema', function() {
       friend: { name: 'Rachael', favoriteColor: 'red' }
     }, {
       friend: { id: 5 }
+    });
+  });
+
+  it(' should properly handle no-object', function () {
+    "use strict";
+    testSchema({
+      friend: {
+        name: { type: 'string' },
+        friend: {
+          name: { type: 'string' }
+        }
+      }
+    }, {
+      friend: {}
+    }, {
+      friend: 1
     });
   });
 
