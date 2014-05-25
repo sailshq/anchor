@@ -61,7 +61,7 @@ Anchor.prototype.to = function (ruleset, context) {
 	// If ruleset doesn't contain any explicit rule keys,
 	// assume that this is a type
 
-  if (util.isPlainObject(ruleset)) {
+  if (util.isPlainObject(ruleset) || util.isArray(ruleset)) {
 
     if (util.has(ruleset, 'type') && util.keys(ruleset).length == 1) {
       // backward compatible for anchor(data).to({ type: typeDef })
