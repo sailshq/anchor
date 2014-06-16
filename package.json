@@ -1,6 +1,6 @@
 {
   "name": "anchor",
-  "version": "0.9.12",
+  "version": "0.10.0-rc2",
   "description": "Recursive validation library with support for objects and lists",
   "homepage": "http://sailsjs.org",
   "keywords": [
@@ -32,10 +32,10 @@
   "readmeFilename": "README.md",
   "dependencies": {
     "validator": "~3.3.0",
-    "lodash": "~2.4.1",
-    "async": "0.2.10"
+    "lodash": "~2.4.1"
   },
   "devDependencies": {
+    "async": "~0.2.10",
     "mocha": "1.9.x"
   }
 }
