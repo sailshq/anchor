@@ -31,7 +31,7 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "validator": "~3.3.0",
+    "validator": "~3.16.0",
     "lodash": "~2.4.1"
   },
   "devDependencies": {
