@@ -14,7 +14,7 @@ This makes it really useful for things like:
 Adds support for strongly typed arguments, like http://lea.verou.me/2011/05/strongly-typed-javascript/, but goes a step further by adding support for array and object sub-validation.
 It's also the core validation library for the Sails ecosystem. 
 
-(Built on top of the great work with https://github.com/chriso/node-validator)
+(Built on top of the great work with https://github.com/chriso/validator.js)
 
 ## Installation
 
