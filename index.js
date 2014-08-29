@@ -87,11 +87,12 @@ Anchor.prototype.to = function (ruleset, context, data) {
 		}
 	}
 
-	if (this.ignoreMissing
-		&& errors.length === 1
-		&& errors[0].message.match(/^Unknown rule/i)) {
+	for (var i = 0; i < errors.length; i++) {
 
-		return false;
+		if (this.ignoreMissing && errors[i].message.match(/^Unknown rule/i)) {
+			errors.splice(i--, 1);
+		}
+
 	}
 
 	// If errors exist, return the list of them
