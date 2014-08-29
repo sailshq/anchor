@@ -32,11 +32,22 @@ function Anchor (entity) {
 	}
 	else this.data = entity;
 
+	this.ignoreMissing = false;
+
 	return this;
 }
 
+/**
+ * Sets whether to ignore missing rules in Anchor, or not.
+ * 
+ * @param  {bool} ignore
+ * @return {Anchor}
+ */
+Anchor.prototype.ignore = function (ignore) {
+	this.ignoreMissing = typeof ignore === 'undefined' ? true : ignore;
 
-
+	return this;
+};
 
 
 /**
@@ -74,6 +85,13 @@ Anchor.prototype.to = function (ruleset, context, data) {
 		else {
 			errors = errors.concat(Anchor.match.rule.call(context, data || this.data, rule, ruleset[rule]));
 		}
+	}
+
+	if (this.ignoreMissing
+		&& errors.length === 1
+		&& errors[0].message.match(/^Unknown rule/i)) {
+
+		return false;
 	}
 
 	// If errors exist, return the list of them
