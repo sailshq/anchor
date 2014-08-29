@@ -53,8 +53,7 @@ Anchor.prototype.rules = require('./lib/match/rules');
  * Enforce that the data matches the specified ruleset
  */
 
-Anchor.prototype.to = function (ruleset, context) {
-
+Anchor.prototype.to = function (ruleset, context, data) {
 	var errors = [];
 
 	// If ruleset doesn't contain any explicit rule keys,
@@ -68,12 +67,12 @@ Anchor.prototype.to = function (ruleset, context) {
 
 			// Use deep match to descend into the collection and verify each item and/or key
 			// Stop at default maxDepth (50) to prevent infinite loops in self-associations
-			errors = errors.concat(Anchor.match.type.call(context, this.data, ruleset['type']));
+			errors = errors.concat(Anchor.match.type.call(context, data || this.data, ruleset['type']));
 		}
 
 		// Validate a non-type rule
 		else {
-			errors = errors.concat(Anchor.match.rule.call(context, this.data, rule, ruleset[rule]));
+			errors = errors.concat(Anchor.match.rule.call(context, data || this.data, rule, ruleset[rule]));
 		}
 	}
 
@@ -88,8 +87,41 @@ Anchor.prototype.to = function (ruleset, context) {
 };
 Anchor.prototype.hasErrors = Anchor.prototype.to;
 
+/**
+ * Allows simple validation of multiple rules simultaneously.
+ * 
+ * @param  {{}} ruleset
+ * @param  {{}} context
+ * @return {boolean|{}}
+ */
+Anchor.prototype.toss = function (ruleset, context) {
+	var errors = {},
+		hasErrors = false;
+
+	context = context || {};
 
 
+	for (var key in ruleset) {
+
+		if (typeof this.data[key] === 'undefined'
+			&& typeof ruleset[key] !== 'undefined'
+			&& !ruleset[key].required) {
+
+			continue;
+		}
+
+
+		var result = this.to(ruleset[key], context[key], this.data[key]);
+
+		if (result !== false) {
+			errors[key] = result;
+			hasErrors = true;
+		}
+	}
+
+
+	return hasErrors ? errors : false;
+};
 
 
 /**
