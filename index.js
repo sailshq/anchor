@@ -74,16 +74,18 @@ Anchor.prototype.to = function (ruleset, context, data) {
 	// Look for explicit rules
 	for (var rule in ruleset) {
 
+		var ruleData = typeof data === 'undefined' ? this.data : data;
+
 		if (rule === 'type') {
 
 			// Use deep match to descend into the collection and verify each item and/or key
 			// Stop at default maxDepth (50) to prevent infinite loops in self-associations
-			errors = errors.concat(Anchor.match.type.call(context, data || this.data, ruleset['type']));
+			errors = errors.concat(Anchor.match.type.call(context, ruleData, ruleset['type']));
 		}
 
 		// Validate a non-type rule
 		else {
-			errors = errors.concat(Anchor.match.rule.call(context, data || this.data, rule, ruleset[rule]));
+			errors = errors.concat(Anchor.match.rule.call(context, ruleData, rule, ruleset[rule]));
 		}
 	}
 
