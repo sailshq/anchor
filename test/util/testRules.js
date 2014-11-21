@@ -25,8 +25,6 @@ module.exports = function testRules (rules, example, nonexample) {
 	}
 
 	function gotErrors (errMsg, err, data) {
-		console.error(err);
-		console.error(data);
 		throw new Error(errMsg);
 	}
 };

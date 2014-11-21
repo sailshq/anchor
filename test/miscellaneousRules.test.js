@@ -14,28 +14,28 @@ describe('miscellaneous rules', function() {
 		});
 	});
 
-        describe ('greaterThan/lessThan',function () {
-                it (' should support "greaterThan" rule ', function () {
-                        return testRules({
-                                greaterThan: 3.5
-                        },4,3);
-                });
-                it (' should support "greaterThan" rule ', function () {
-                        return testRules({
-                                greaterThan: 3.5
-                        },3.6,3.5);
-                });
-                it (' should support "lessThan" rule ', function () {
-                        return testRules({
-                                lessThan: 3.5
-                        },3,4);
-                });
-                it (' should support "lessThan" rule ', function () {
-                        return testRules({
-                                lessThan: 3.5
-                        },3.4,3.5);
-                });
+    describe ('greaterThan/lessThan',function () {
+        it (' should support "greaterThan" rule ', function () {
+            return testRules({
+                greaterThan: 3.5
+            },4,3);
         });
+        it (' should support "greaterThan" rule ', function () {
+            return testRules({
+                greaterThan: 3.5
+            },3.6,3.5);
+        });
+        it (' should support "lessThan" rule ', function () {
+            return testRules({
+                lessThan: 3.5
+            },3,4);
+        });
+        it (' should support "lessThan" rule ', function () {
+            return testRules({
+                lessThan: 3.5
+            },3.4,3.5);
+        });
+    });
 
 	describe('url', function () {
 
@@ -44,7 +44,7 @@ describe('miscellaneous rules', function() {
 		});
 
 		it ('should support "url" rule with options', function () {
-			return testRules({ url: { require_protocol: true} }, 'http://sailsjs.org', 'www.sailsjs.org');
+			return testRules({ url: { require_protocol: true } }, 'http://sailsjs.org', 'www.sailsjs.org');
 		});
 	});
 
