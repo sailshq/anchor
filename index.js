@@ -66,6 +66,9 @@ Anchor.prototype.to = function (ruleset, context) {
 
 		if (rule === 'type') {
 
+      if (typeof ruleset['in'] === 'object' && ruleset['in'].hasOwnProperty(this.data)) {
+          this.data = ruleset['in'][this.data]
+      }
 			// Use deep match to descend into the collection and verify each item and/or key
 			// Stop at default maxDepth (50) to prevent infinite loops in self-associations
 			errors = errors.concat(Anchor.match.type.call(context, this.data, ruleset['type']));
