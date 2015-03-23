@@ -59,17 +59,17 @@ describe('basic rules', function() {
 			return testType('email','fox.and.the.hound@theforest.com','foo');
 		});
 
-    it('should support "alphadashed" rule ', function () {
-        return testType('alphadashed','test-Test_test','Inv@lid');
-    });
+		it('should support "alphadashed" rule ', function () {
+			return testType('alphadashed','test-Test_test','Inv@lid');
+		});
 
-    it('should support "alphanumericdashed" rule ', function () {
-        return testType('alphanumericdashed','test123-Test456_test789','Inv@lid');
-    });
+		it('should support "alphanumericdashed" rule ', function () {
+			return testType('alphanumericdashed','test123-Test456_test789','Inv@lid');
+		});
     
-    it ('should support "longtext" rule ', function () {
-      return testType('longtext', 'foo', 22482);
-    });
+		it ('should support "longtext" rule ', function () {
+			return testType('string', 'foo', 22482);
+		});
 
 	});
 
