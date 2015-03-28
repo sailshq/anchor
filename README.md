@@ -1,5 +1,8 @@
 anchor
 ======
+[![Build Status](https://travis-ci.org/balderdashy/anchor.svg?branch=master)](https://travis-ci.org/balderdashy/anchor)
+[![npm version](https://badge.fury.io/js/anchor.svg)](http://badge.fury.io/js/anchor)
+[![Dependency Status](https://david-dm.org/balderdashy/anchor.svg)](https://david-dm.org/balderdashy/anchor)
 
 Anchor is a javascript library that lets you define strict types.
 <!-- err todo: It also helps you validate and normalize the usage of command line scripts and even individual functions. -->
