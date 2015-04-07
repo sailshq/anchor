@@ -21,7 +21,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo Running tests... && mocha --globals testRule"
+    "test": "make test"
   },
   "repository": {
     "type": "git",
