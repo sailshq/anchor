@@ -14,28 +14,28 @@ describe('miscellaneous rules', function() {
 		});
 	});
 
-    describe ('greaterThan/lessThan',function () {
-        it (' should support "greaterThan" rule ', function () {
-            return testRules({
-                greaterThan: 3.5
-            },4,3);
-        });
-        it (' should support "greaterThan" rule ', function () {
-            return testRules({
-                greaterThan: 3.5
-            },3.6,3.5);
-        });
-        it (' should support "lessThan" rule ', function () {
-            return testRules({
-                lessThan: 3.5
-            },3,4);
-        });
-        it (' should support "lessThan" rule ', function () {
-            return testRules({
-                lessThan: 3.5
-            },3.4,3.5);
-        });
+  describe ('greaterThan/lessThan',function () {
+    it (' should support "greaterThan" rule ', function () {
+      return testRules({
+        greaterThan: 3.5
+      }, 4, 3);
     });
+    it (' should support "greaterThan" rule ', function () {
+      return testRules({
+        greaterThan: 3.5
+      }, 3.6, 3.5);
+    });
+    it (' should support "lessThan" rule ', function () {
+      return testRules({
+        lessThan: 3.5
+      }, 3, 4);
+    });
+    it (' should support "lessThan" rule ', function () {
+      return testRules({
+        lessThan: 3.5
+      }, 3.4, 3.5);
+    });
+  });
 
 	describe('url', function () {
 
@@ -55,5 +55,50 @@ describe('miscellaneous rules', function() {
 			},new Date(Date.now() - 100000),new Date(Date.now() + 1000000));
 		});
 	});
+	
+	describe('required', function () {
+	  it(' should support "required" with boolean', function() {
+      testRules({
+        type: 'boolean',
+        required: true
+      }, true, undefined);
+    });
+    
+    it(' should support "required" with boolean value false', function() {
+      testRules({
+        type: 'boolean',
+        required: true
+      }, false, null);
+    });
+    
+    it(' should support "required" with integer value 0', function() {
+      testRules({
+        type: 'integer',
+        required: true
+      }, 0, NaN);
+    });
+    
+    it(' should support "required" with string', function() {
+      testRules({
+        type: 'string',
+        required: true
+      }, 'some', '');
+    });
+    
+    it(' should support "required" with empty object', function() {
+      testRules({
+        type: 'json',
+        required: true
+      }, {}, undefined);
+    });
+    
+    it(' should support "required" with array', function() {
+      testRules({
+        type: [],
+        required: true
+      }, ['one'], []);
+    });
+
+  });
 
 });
