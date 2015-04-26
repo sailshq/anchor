@@ -64,6 +64,13 @@ describe('miscellaneous rules', function() {
       }, true, undefined);
     });
     
+    it(' should support "required" with boolean value false', function() {
+      testRules({
+        type: 'boolean',
+        required: true
+      }, false, null);
+    });
+    
     it(' should support "required" with integer value 0', function() {
       testRules({
         type: 'integer',
