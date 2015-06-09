@@ -1,6 +1,6 @@
 {
   "name": "anchor",
-  "version": "0.10.2",
+  "version": "0.10.3",
   "description": "Recursive validation library with support for objects and lists",
   "homepage": "http://sailsjs.org",
   "keywords": [
