@@ -4,21 +4,19 @@ var async = require('async');
 
 // Test a rule given a deliberate example and nonexample
 // Test WITH and WITHOUT callback
-module.exports = function testType (rule, example, nonexample) {
+module.exports = function testType (rule, example, nonexample, isRule) {
 
 	// Throw an error if there's any trouble
 	// (not a good production usage pattern-- just here for testing)
 	var exampleOutcome, nonexampleOutcome;
 
+  if (isRule !== true)
+    rule = {type: rule};
 	// Should be falsy
-	exampleOutcome = anchor(example).to({
-		type: rule
-	});
+	exampleOutcome = anchor(example).to(rule);
 
 	// Should be an array
-	nonexampleOutcome = anchor(nonexample).to({
-		type: rule
-	});
+	nonexampleOutcome = anchor(nonexample).to(rule);
 
 	if (exampleOutcome) {
 		return gotErrors(exampleOutcome);

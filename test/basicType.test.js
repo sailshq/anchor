@@ -87,6 +87,14 @@ describe('basic rules', function() {
 		it ('"number" should identify integers ', function () {
 			return testType('number',28235,'foo');
 		});
+
+		it ('"number" should support the enum(in) ', function () {
+			return testType({type: 'number', 'in': {one:1, two:2}},'one','foo', true);
+		});
+
+		it ('"number" should support the enum(in) and pass value directly', function () {
+			return testType({type: 'number', 'in': {one:1, two:2}}, 1, 'foo', true);
+		});
 	});
 
 });
