@@ -31,9 +31,9 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "validator": "~3.41.2",
+    "gjtk": "^1.0.3-beta",
     "lodash": "~3.9.3",
-    "gjtk": "~1.0.0b"
+    "validator": "~3.41.2"
   },
   "devDependencies": {
     "async": "~0.2.10",
