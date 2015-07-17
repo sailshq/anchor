@@ -33,7 +33,7 @@
   "dependencies": {
     "validator": "~3.41.2",
     "lodash": "~3.9.3",
-    "gjtk": "~1.0.0b"
+    "gjtk": "~1.0.3-beta"
   },
   "devDependencies": {
     "async": "~0.2.10",
