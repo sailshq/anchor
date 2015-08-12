@@ -122,10 +122,6 @@ describe('miscellaneous rules', function() {
       }
     ];
 
-    var invalidGeoJson = [
-
-    ];
-
     it(' should support "json" type', function () {
       testRules(jsondef, validGeoJson[0], { foo: 'bar' })
     });
