@@ -98,6 +98,36 @@ describe('miscellaneous rules', function() {
         required: true
       }, ['one'], []);
     });
+  });
+
+  describe('geojson', function () {
+    var jsondef = {
+      type: 'json',
+      geojson: true
+    };
+    var stringdef = {
+      type: 'string',
+      geojson: true
+    };
+    var validGeoJson = [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [125.6, 10.1]
+        },
+        "properties": {
+          "name": "Dinagat Islands"
+        }
+      }
+    ];
+
+    it(' should support "json" type', function () {
+      testRules(jsondef, validGeoJson[0], { foo: 'bar' })
+    });
+    it(' should support "string" type', function () {
+      testRules(stringdef, JSON.stringify(validGeoJson[0]), JSON.stringify({ foo: 'bar' }));
+    });
 
   });
 
