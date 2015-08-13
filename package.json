@@ -41,7 +41,7 @@
     "validator"
   ],
   "devDependencies": {
-    "async": "~0.2.10",
-    "mocha": "1.9.x"
+    "async": "^0.9.0",
+    "mocha": "^1.19.0"
   }
 }
