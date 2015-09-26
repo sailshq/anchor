@@ -128,7 +128,22 @@ describe('miscellaneous rules', function() {
     it(' should support "string" type', function () {
       testRules(stringdef, JSON.stringify(validGeoJson[0]), JSON.stringify({ foo: 'bar' }));
     });
+  });
 
+  describe('dbType', function () {
+    it(' should support "dbType" with existing validation rule', function() {
+      testRules({
+        type: 'float',
+        dbType: 'float'
+      }, 10.9, 'hi');
+    });
+    
+    it(' should support "dbType" with non-existing validation rule', function() {
+      testRules({
+        type: 'float',
+        dbType: 'age'
+      }, 10, 'hi');
+    });
   });
 
 });
