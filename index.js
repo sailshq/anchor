@@ -70,6 +70,16 @@ Anchor.prototype.to = function (ruleset, context) {
 			// Stop at default maxDepth (50) to prevent infinite loops in self-associations
 			errors = errors.concat(Anchor.match.type.call(context, this.data, ruleset['type']));
 		}
+		
+    // Validate a dbType rule
+    else if (rule === 'dbType') {
+      
+      // only if a validation rule exists for it so it doesn't break on an adapter that
+      // doesn't support the particular dbType
+      if(Anchor.prototype.rules[ruleset.dbType]) {
+        errors = errors.concat(Anchor.match.type.call(context, this.data, ruleset.dbType));
+      }
+    }
 
 		// Validate a non-type rule
 		else {
