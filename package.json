@@ -32,8 +32,8 @@
   "readmeFilename": "README.md",
   "dependencies": {
     "geojsonhint": "^1.1.0",
-    "lodash": "~3.9.3",
-    "validator": "~3.41.2"
+    "lodash": "^3.10",
+    "validator": "^4.0"
   },
   "bundledDependencies": [
     "geojsonhint",
