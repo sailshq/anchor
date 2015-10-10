@@ -33,7 +33,7 @@
   "dependencies": {
     "geojsonhint": "^1.1.0",
     "lodash": "~3.9.3",
-    "validator": "~3.41.2"
+    "validator": "~3.41.3"
   },
   "bundledDependencies": [
     "geojsonhint",
