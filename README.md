@@ -1,6 +1,6 @@
 anchor
 ======
-[![Build Status](https://travis-ci.org/balderdashy/anchor.svg?branch=master)](https://travis-ci.org/balderdashy/anchor)
+[![Build Status](https://travis-ci.org/sailsjs/anchor.svg?branch=master)](https://travis-ci.org/sailsjs/anchor)
 [![npm version](https://badge.fury.io/js/anchor.svg)](http://badge.fury.io/js/anchor)
 
 Anchor is a javascript library that lets you define strict types.
