@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/balderdashy/anchor.git"
+    "url": "git://github.com/sailsjs/anchor.git"
   },
   "author": "Mike McNeil",
   "license": "MIT",
