@@ -7,4 +7,5 @@ ssl
 .idea
 nbproject
 .waterline
+*.sw*
 npm-debug.log
