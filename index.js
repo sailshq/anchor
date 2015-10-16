@@ -32,11 +32,22 @@ function Anchor (entity) {
 	}
 	else this.data = entity;
 
+	this.ignoreMissing = false;
+
 	return this;
 }
 
+/**
+ * Sets whether to ignore missing rules in Anchor, or not.
+ * 
+ * @param  {bool} ignore
+ * @return {Anchor}
+ */
+Anchor.prototype.ignore = function (ignore) {
+	this.ignoreMissing = typeof ignore === 'undefined' ? true : ignore;
 
-
+	return this;
+};
 
 
 /**
@@ -53,8 +64,7 @@ Anchor.prototype.rules = require('./lib/match/rules');
  * Enforce that the data matches the specified ruleset
  */
 
-Anchor.prototype.to = function (ruleset, context) {
-
+Anchor.prototype.to = function (ruleset, context, data) {
 	var errors = [];
 
 	// If ruleset doesn't contain any explicit rule keys,
@@ -64,11 +74,13 @@ Anchor.prototype.to = function (ruleset, context) {
 	// Look for explicit rules
 	for (var rule in ruleset) {
 
+		var ruleData = typeof data === 'undefined' ? this.data : data;
+
 		if (rule === 'type') {
 
 			// Use deep match to descend into the collection and verify each item and/or key
 			// Stop at default maxDepth (50) to prevent infinite loops in self-associations
-			errors = errors.concat(Anchor.match.type.call(context, this.data, ruleset['type']));
+			errors = errors.concat(Anchor.match.type.call(context, ruleData, ruleset['type']));
 		}
 		
     // Validate a dbType rule
@@ -83,8 +95,16 @@ Anchor.prototype.to = function (ruleset, context) {
 
 		// Validate a non-type rule
 		else {
-			errors = errors.concat(Anchor.match.rule.call(context, this.data, rule, ruleset[rule]));
+			errors = errors.concat(Anchor.match.rule.call(context, ruleData, rule, ruleset[rule]));
 		}
+	}
+
+	for (var i = 0; i < errors.length; i++) {
+
+		if (this.ignoreMissing && errors[i].message.match(/^Unknown rule/i)) {
+			errors.splice(i--, 1);
+		}
+
 	}
 
 	// If errors exist, return the list of them
@@ -98,8 +118,41 @@ Anchor.prototype.to = function (ruleset, context) {
 };
 Anchor.prototype.hasErrors = Anchor.prototype.to;
 
+/**
+ * Allows simple validation of multiple rules simultaneously.
+ * 
+ * @param  {{}} ruleset
+ * @param  {{}} context
+ * @return {boolean|{}}
+ */
+Anchor.prototype.toss = function (ruleset, context) {
+	var errors = {},
+		hasErrors = false;
+
+	context = context || {};
 
 
+	for (var key in ruleset) {
+
+		if (typeof this.data[key] === 'undefined'
+			&& typeof ruleset[key] !== 'undefined'
+			&& !ruleset[key].required) {
+
+			continue;
+		}
+
+
+		var result = this.to(ruleset[key], context[key], this.data[key]);
+
+		if (result !== false) {
+			errors[key] = result;
+			hasErrors = true;
+		}
+	}
+
+
+	return hasErrors ? errors : false;
+};
 
 
 /**
