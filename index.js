@@ -84,6 +84,15 @@ Anchor.prototype.to = function (ruleset, context) {
 
     // Validate a non-type rule
     else {
+
+      // Normalize the value if it looks like a boolean
+      if(ruleset[rule] === 'true') {
+        ruleset[rule] = true;
+      }
+
+      if(ruleset[rule] === 'false') {
+        ruleset[rule] = false;
+      }
       // If the rule value is a boolean we don't need to pass the value along.
       // Otherwise we can pass it along so it's options are available in
       // the validation.
