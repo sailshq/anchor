@@ -123,7 +123,7 @@ describe('miscellaneous rules', function() {
     ];
 
     it(' should support "json" type', function () {
-      testRules(jsondef, validGeoJson[0], { foo: 'bar' })
+      testRules(jsondef, validGeoJson[0], { foo: 'bar' });
     });
     it(' should support "string" type', function () {
       testRules(stringdef, JSON.stringify(validGeoJson[0]), JSON.stringify({ foo: 'bar' }));
