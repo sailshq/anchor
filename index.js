@@ -96,7 +96,7 @@ Anchor.prototype.to = function (ruleset, context) {
 
       // If the value is false, then we shouldn't even run the validation
       if(ruleset[rule] === false) {
-        return;
+        break;
       }
 
       // If the rule value is a boolean we don't need to pass the value along.
