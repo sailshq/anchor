@@ -31,9 +31,9 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "geojsonhint": "^1.1.0",
-    "lodash": "~3.9.3",
-    "validator": "~3.41.3"
+    "geojsonhint": "1.1.0",
+    "lodash": "3.10.1",
+    "validator": "4.4.0"
   },
   "bundledDependencies": [
     "geojsonhint",
