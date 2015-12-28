@@ -6,25 +6,24 @@ var async = require('async');
 // Test WITH and WITHOUT callback
 module.exports = function testRules (rules, example, nonexample) {
 
-	// Throw an error if there's any trouble
-	// (not a good production usage pattern-- just here for testing)
-	var exampleOutcome, nonexampleOutcome;
+  // Throw an error if there's any trouble
+  // (not a good production usage pattern-- just here for testing)
+  var exampleOutcome, nonexampleOutcome;
 
-	// Should be falsy
-	exampleOutcome = anchor(example).to(rules);
+  // Should be falsy
+  exampleOutcome = anchor(example).to(rules);
 
-	// Should be an array
-	nonexampleOutcome = anchor(nonexample).to(rules);
+  // Should be an array
+  nonexampleOutcome = anchor(nonexample).to(rules);
 
-	if (exampleOutcome) {
-		return gotErrors('Valid input marked with error!', exampleOutcome, example);
-	}
-	if (!_.isArray(nonexampleOutcome)) {
-		return gotErrors('Invalid input (' + nonexample + ') allowed through.',
-			rules, nonexample);
-	}
+  if (exampleOutcome) {
+    return gotErrors('Valid input marked with error!', exampleOutcome, example);
+  }
+  if (!_.isArray(nonexampleOutcome)) {
+    return gotErrors('Invalid input (' + nonexample + ') allowed through.', rules, nonexample);
+  }
 
-	function gotErrors (errMsg, err, data) {
-		throw new Error(errMsg);
-	}
+  function gotErrors (errMsg, err, data) {
+    throw new Error(errMsg);
+  }
 };

@@ -5,58 +5,60 @@ var assert = require("assert");
 
 describe('Custom Types', function() {
 
-	describe('Single Definition', function() {
-		it(' should properly validate a simple object with a custom type', function() {
-			var rules = {
-				houseNumber: 'five'
-			},
-			example = {
-				houseNumber: 5
-			},
+  describe('Single Definition', function() {
+    it(' should properly validate a simple object with a custom type', function() {
+      var rules = {
+        houseNumber: 'five'
+      };
 
-			isfive = function(val){
-				return val === 5;
-			};
+      var example = {
+        houseNumber: 5
+      };
 
-			assert.equal(false, anchor(example).define("five", isfive).to({type:rules}));
-		});
-	});
+      var isfive = function(val){
+        return val === 5;
+      };
 
-	describe('Dictonary of Definitions', function() {
-		it(' should properly validate a simple object with a custom type', function() {
-			var rules = {
-				houseNumber: 'five',
-				fish: 'yummyFish'
-			},
-			example = {
-				houseNumber: 5,
-				fish: 'tuna'
-			},
+      assert.equal(false, anchor(example).define("five", isfive).to({type:rules}));
+    });
+  });
 
-			definition = {
-				five: function(val){
-					return val === 5;
-				},
-				yummyFish: function(val){
-					return val === "tuna";
-				}
-			};
+  describe('Dictonary of Definitions', function() {
+    it(' should properly validate a simple object with a custom type', function() {
+      var rules = {
+        houseNumber: 'five',
+        fish: 'yummyFish'
+      };
 
-			assert.equal(false, anchor(example).define(definition).to({type:rules}));
-		});
-	});
+      var example = {
+        houseNumber: 5,
+        fish: 'tuna'
+      };
 
-	describe('Context', function() {
-		it(' should support providing context for rules via',function () {
-			var user = { password: 'passW0rd', passwordConfirmation: 'passW0rd' };
+      var definition = {
+        five: function(val){
+          return val === 5;
+        },
+        yummyFish: function(val){
+          return val === "tuna";
+        }
+      };
 
-			anchor.define('password', function (password) {
-				return password === this.passwordConfirmation;
-			});
+      assert.equal(false, anchor(example).define(definition).to({type:rules}));
+    });
+  });
 
-			var outcome = anchor(user.password).to({ type: 'password' }, user);
+  describe('Context', function() {
+    it(' should support providing context for rules via',function () {
+      var user = { password: 'passW0rd', passwordConfirmation: 'passW0rd' };
 
-			assert.equal(false, outcome);
-		});
-	});
+      anchor.define('password', function (password) {
+        return password === this.passwordConfirmation;
+      });
+
+      var outcome = anchor(user.password).to({ type: 'password' }, user);
+
+      assert.equal(false, outcome);
+    });
+  });
 });

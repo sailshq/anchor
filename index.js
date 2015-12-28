@@ -13,7 +13,7 @@ var _ = require('lodash');
  */
 
 module.exports = function (entity) {
-	return new Anchor(entity);
+  return new Anchor(entity);
 };
 
 
@@ -26,13 +26,15 @@ module.exports = function (entity) {
  */
 
 function Anchor (entity) {
-	if (util.isFunction(entity)) {
-		this.fn = entity;
-		throw new Error ('Anchor does not support functions yet!');
-	}
-	else this.data = entity;
+  if (util.isFunction(entity)) {
+    this.fn = entity;
+    throw new Error ('Anchor does not support functions yet!');
+  }
+  else {
+    this.data = entity;
+  }
 
-	return this;
+  return this;
 }
 
 
@@ -55,20 +57,20 @@ Anchor.prototype.rules = require('./lib/match/rules');
 
 Anchor.prototype.to = function (ruleset, context) {
 
-	var errors = [];
+  var errors = [];
 
-	// If ruleset doesn't contain any explicit rule keys,
-	// assume that this is a type
+  // If ruleset doesn't contain any explicit rule keys,
+  // assume that this is a type
 
-	// Look for explicit rules
-	for (var rule in ruleset) {
+  // Look for explicit rules
+  for (var rule in ruleset) {
 
-		if (rule === 'type') {
+    if (rule === 'type') {
 
-			// Use deep match to descend into the collection and verify each item and/or key
-			// Stop at default maxDepth (50) to prevent infinite loops in self-associations
-			errors = errors.concat(Anchor.match.type.call(context, this.data, ruleset.type));
-		}
+      // Use deep match to descend into the collection and verify each item and/or key
+      // Stop at default maxDepth (50) to prevent infinite loops in self-associations
+      errors = errors.concat(Anchor.match.type.call(context, this.data, ruleset.type));
+    }
 
     // Validate a dbType rule
     else if (rule === 'dbType') {
@@ -80,25 +82,27 @@ Anchor.prototype.to = function (ruleset, context) {
       }
     }
 
-		// Validate a non-type rule
-		else {
-			// If the rule value is a boolean we don't need to pass the value along.
-			// Otherwise we can pass it along so it's options are available in
-			// the validation.
-			var ruleVal = _.isBoolean(ruleset[rule]) ? undefined : ruleset[rule];
-			errors = errors.concat(Anchor.match.rule.call(context, this.data, rule, ruleVal));
-		}
-	}
+    // Validate a non-type rule
+    else {
+      // If the rule value is a boolean we don't need to pass the value along.
+      // Otherwise we can pass it along so it's options are available in
+      // the validation.
+      var ruleVal = _.isBoolean(ruleset[rule]) ? undefined : ruleset[rule];
+      errors = errors.concat(Anchor.match.rule.call(context, this.data, rule, ruleVal));
+    }
+  }
 
-	// If errors exist, return the list of them
-	if (errors.length) {
-		return errors;
-	}
+  // If errors exist, return the list of them
+  if (errors.length) {
+    return errors;
+  }
 
-	// No errors, so return false
-	else return false;
-
+  // No errors, so return false
+  else {
+    return false;
+  }
 };
+
 Anchor.prototype.hasErrors = Anchor.prototype.to;
 
 
@@ -116,18 +120,18 @@ Anchor.prototype.hasErrors = Anchor.prototype.to;
  * Much handier would be an evented architecture, that allows
  * for adapter developers to write:
  *
-	{
-		// Called before find() receives criteria
-		// Here, criteria refers to just attributes (the `where`)
-		// limit, skip, and sort are not included
-		coerceCriteria: function (criteria) {
-			return criteria;
-		},
+{
+// Called before find() receives criteria
+// Here, criteria refers to just attributes (the `where`)
+// limit, skip, and sort are not included
+coerceCriteria: function (criteria) {
+return criteria;
+},
 
-		// Called before create() or update() receive values
-		coerceValues: function () {}
+// Called before create() or update() receive values
+coerceValues: function () {}
 
-	}
+}
  *
  * Adapter developers would be able to use Anchor.prototype.cast()
  * to declaritively define these type coercions.
@@ -138,7 +142,7 @@ Anchor.prototype.hasErrors = Anchor.prototype.to;
  */
 
 Anchor.prototype.cast = function (ruleset) {
-	todo();
+  todo();
 };
 
 
@@ -150,26 +154,26 @@ Anchor.prototype.cast = function (ruleset) {
 
 Anchor.prototype.hurl = function (ruleset) {
 
-	// Iterate trough given data attributes
-	// to check if they exist in the ruleset
-	for (var attr in this.data) {
-		if (this.data.hasOwnProperty(attr)) {
+  // Iterate trough given data attributes
+  // to check if they exist in the ruleset
+  for (var attr in this.data) {
+    if (this.data.hasOwnProperty(attr)) {
 
-			// If it doesnt...
-			if (!ruleset[attr]) {
+      // If it doesnt...
+      if (!ruleset[attr]) {
 
-				// Declaring err here as error helpers live in match.js
-				var err = new Error('Validation error: Attribute \"' + attr + '\" is not in the ruleset.');
+        // Declaring err here as error helpers live in match.js
+        var err = new Error('Validation error: Attribute \"' + attr + '\" is not in the ruleset.');
 
-				// just throw it
-				throw err;
-			}
-		}
-	}
+        // just throw it
+        throw err;
+      }
+    }
+  }
 
-	// Once we make sure that attributes match
-	// we can just proceed to deepMatch
-	Anchor.match(this.data, ruleset, this);
+  // Once we make sure that attributes match
+  // we can just proceed to deepMatch
+  Anchor.match(this.data, ruleset, this);
 };
 
 
@@ -181,7 +185,7 @@ Anchor.prototype.hurl = function (ruleset) {
  */
 
 Anchor.prototype.defaults = function (ruleset) {
-	todo();
+  todo();
 };
 
 
@@ -200,33 +204,29 @@ Anchor.prototype.defaults = function (ruleset) {
 
 Anchor.prototype.define = function (name, definition) {
 
-	// check to see if we have an dictionary
-	if ( util.isObject(name) ) {
+  // check to see if we have an dictionary
+  if ( util.isObject(name) ) {
 
-		// if so all the attributes should be validation functions
-		for (var attr in name){
-			if(!util.isFunction(name[attr])){
-				throw new Error('Definition error: \"' + attr + '\" does not have a definition');
-			}
-		}
+    // if so all the attributes should be validation functions
+    for (var attr in name) {
+      if(!util.isFunction(name[attr])){
+        throw new Error('Definition error: \"' + attr + '\" does not have a definition');
+      }
+    }
 
-		// add the new custom data types
-		util.extend(Anchor.prototype.rules, name);
+    // add the new custom data types
+    util.extend(Anchor.prototype.rules, name);
 
-		return this;
+    return this;
+  }
 
-	}
+  if ( util.isFunction(definition) && util.isString(name) ) {
+    // Add a single data type
+    Anchor.prototype.rules[name] = definition;
+    return this;
+  }
 
-	if ( util.isFunction(definition) && util.isString(name) ) {
-
-		// Add a single data type
-		Anchor.prototype.rules[name] = definition;
-
-		return this;
-
-	}
-
-	throw new Error('Definition error: \"' + name + '\" is not a valid definition.');
+  throw new Error('Definition error: \"' + name + '\" is not a valid definition.');
 };
 
 
@@ -238,7 +238,7 @@ Anchor.prototype.define = function (name, definition) {
  */
 
 Anchor.prototype.as = function (ruleset) {
-	todo();
+  todo();
 };
 
 
@@ -249,7 +249,7 @@ Anchor.prototype.as = function (ruleset) {
  */
 
 Anchor.prototype.args = function (args) {
-	todo();
+  todo();
 };
 
 
@@ -260,8 +260,8 @@ Anchor.prototype.args = function (args) {
  */
 
 Anchor.prototype.usage = function () {
-	var usages = util.toArray(arguments);
-	todo();
+  var usages = util.toArray(arguments);
+  todo();
 };
 
 
@@ -288,5 +288,5 @@ module.exports.define = Anchor.prototype.define;
 
 
 function todo() {
-	throw new Error('Not implemented yet! If you\'d like to contribute, tweet @mikermcneil.');
+  throw new Error('Not implemented yet! If you\'d like to contribute, tweet @mikermcneil.');
 }
