@@ -83,7 +83,11 @@ Anchor.prototype.to = function (ruleset, context) {
 
 		// Validate a non-type rule
 		else {
-			errors = errors.concat(Anchor.match.rule.call(context, this.data, rule, ruleset[rule]));
+			// If the rule value is a boolean we don't need to pass the value along.
+			// Otherwise we can pass it along so it's options are available in
+			// the validation.
+			var ruleVal = _.isBoolean(ruleset[rule]) ? undefined : ruleset[rule];
+			errors = errors.concat(Anchor.match.rule.call(context, this.data, rule, ruleVal));
 		}
 	}
 
