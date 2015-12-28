@@ -5,7 +5,7 @@ test: test-unit test-integration
 test-unit:
 	@echo Running tests...
 	@NODE_ENV=test mocha --globals testRule
-	
+
 test-integration:
 	@echo Running integration tests...
 	mkdir test_integration

@@ -7,7 +7,7 @@ var assert = require('assert');
 describe('custom validation messages ($message syntax)', function() {
 
   it(' should use custom validation message when `$message` is a string', function() {
-    
+
     var errors = anchor({
       name: 'Sebastian',
       id: '235',
@@ -55,7 +55,7 @@ describe('custom validation messages ($message syntax)', function() {
         case 'id': return err.message === 'oops1';
         case 'friends': return err.message === 'oops2';
         case 'moreFriends': return err.message === 'oops3';
-        
+
         // Check for proper usage error:
         case 'foo': return err.status === 500 && err.code === 'E_USAGE' && err.$message === 'oops4';
         default: return false;

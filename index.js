@@ -60,7 +60,6 @@ Anchor.prototype.to = function (ruleset, context) {
 	// If ruleset doesn't contain any explicit rule keys,
 	// assume that this is a type
 
-
 	// Look for explicit rules
 	for (var rule in ruleset) {
 
@@ -68,12 +67,12 @@ Anchor.prototype.to = function (ruleset, context) {
 
 			// Use deep match to descend into the collection and verify each item and/or key
 			// Stop at default maxDepth (50) to prevent infinite loops in self-associations
-			errors = errors.concat(Anchor.match.type.call(context, this.data, ruleset['type']));
+			errors = errors.concat(Anchor.match.type.call(context, this.data, ruleset.type));
 		}
-		
+
     // Validate a dbType rule
     else if (rule === 'dbType') {
-      
+
       // only if a validation rule exists for it so it doesn't break on an adapter that
       // doesn't support the particular dbType
       if(Anchor.prototype.rules[ruleset.dbType]) {

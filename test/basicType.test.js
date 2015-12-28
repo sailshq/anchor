@@ -66,7 +66,7 @@ describe('basic rules', function() {
 		it('should support "alphanumericdashed" rule ', function () {
 			return testType('alphanumericdashed','test123-Test456_test789','Inv@lid');
 		});
-    
+
 		it ('should support "longtext" rule ', function () {
 			return testType('string', 'foo', 22482);
 		});

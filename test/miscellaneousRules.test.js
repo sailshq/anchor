@@ -55,7 +55,7 @@ describe('miscellaneous rules', function() {
 			},new Date(Date.now() - 100000),new Date(Date.now() + 1000000));
 		});
 	});
-	
+
 	describe('required', function () {
 	  it(' should support "required" with boolean', function() {
       testRules({
@@ -63,35 +63,35 @@ describe('miscellaneous rules', function() {
         required: true
       }, true, undefined);
     });
-    
+
     it(' should support "required" with boolean value false', function() {
       testRules({
         type: 'boolean',
         required: true
       }, false, null);
     });
-    
+
     it(' should support "required" with integer value 0', function() {
       testRules({
         type: 'integer',
         required: true
       }, 0, NaN);
     });
-    
+
     it(' should support "required" with string', function() {
       testRules({
         type: 'string',
         required: true
       }, 'some', '');
     });
-    
+
     it(' should support "required" with empty object', function() {
       testRules({
         type: 'json',
         required: true
       }, {}, undefined);
     });
-    
+
     it(' should support "required" with array', function() {
       testRules({
         type: [],
@@ -137,7 +137,7 @@ describe('miscellaneous rules', function() {
         dbType: 'float'
       }, 10.9, 'hi');
     });
-    
+
     it(' should support "dbType" with non-existing validation rule', function() {
       testRules({
         type: 'float',
