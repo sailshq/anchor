@@ -98,6 +98,34 @@ describe('miscellaneous rules', function() {
         required: true
       }, ['one'], []);
     });
+
+    it(' should support a falsy "required" with boolean', function() {
+      testRules({
+        type: 'boolean',
+        required: false
+      }, true, undefined);
+    });
+
+    it(' should support a falsy "required" with boolean value false', function() {
+      testRules({
+        type: 'boolean',
+        required: false
+      }, false, null);
+    });
+
+    it(' should support a falsy "required" with integer value 0', function() {
+      testRules({
+        type: 'integer',
+        required: false
+      }, 0, NaN);
+    });
+
+    it(' should support a falsy "required" with empty object', function() {
+      testRules({
+        type: 'json',
+        required: false
+      }, {}, undefined);
+    });
   });
 
   describe('geojson', function () {
