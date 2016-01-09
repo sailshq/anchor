@@ -26,6 +26,12 @@ module.exports = function testType (rule, example, nonexample) {
   if (!_.isArray(nonexampleOutcome)) {
     return gotErrors('Invalid input (' + nonexample + ') allowed through as a ' + rule + '.');
   }
+  for (var i = 0; i < nonexampleOutcome.length; i++) {
+    var err = nonexampleOutcome[i];
+    if (!err instanceof Error) {
+      return gotErrors('Input ' + err + " should have been instanceof Error, wasn't");
+    }
+  }
 
   function gotErrors (err) {
     console.error('*****************');
