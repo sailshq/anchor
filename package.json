@@ -35,11 +35,6 @@
     "lodash": "3.10.1",
     "validator": "4.4.0"
   },
-  "bundledDependencies": [
-    "geojsonhint",
-    "lodash",
-    "validator"
-  ],
   "devDependencies": {
     "async": "~0.2.10",
     "mocha": "2.3.4"
