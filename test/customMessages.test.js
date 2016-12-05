@@ -1,4 +1,4 @@
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 var anchor = require('../index.js');
 var testType = require('./util/testType.js');
 var assert = require('assert');

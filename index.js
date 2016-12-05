@@ -2,9 +2,9 @@
  * Module dependencies
  */
 
-var util = require('lodash');
+var util = require('@sailshq/lodash');
 var sanitize = require('validator').sanitize;
-var _ = require('lodash');
+var _ = require('@sailshq/lodash');
 
 
 
