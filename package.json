@@ -31,8 +31,8 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "dependencies": {
-    "geojsonhint": "1.1.0",
-    "lodash": "3.10.1",
+    "@mapbox/geojsonhint": "1.2.1",
+    "@sailshq/lodash": "^3.10.2",
     "validator": "4.4.0"
   },
   "devDependencies": {
