@@ -11,15 +11,15 @@ module.exports = function testRules (rules, example, nonexample) {
   var exampleOutcome, nonexampleOutcome;
 
   // Should be falsy
-  exampleOutcome = anchor(example).to(rules);
+  exampleOutcome = anchor(example, rules);
 
   // Should be an array
-  nonexampleOutcome = anchor(nonexample).to(rules);
+  nonexampleOutcome = anchor(nonexample, rules);
 
-  if (exampleOutcome) {
+  if (exampleOutcome.length) {
     return gotErrors('Valid input marked with error!', exampleOutcome, example);
   }
-  if (!_.isArray(nonexampleOutcome)) {
+  if (!nonexampleOutcome.length) {
     return gotErrors('Invalid input (' + nonexample + ') allowed through.', rules, nonexample);
   }
 

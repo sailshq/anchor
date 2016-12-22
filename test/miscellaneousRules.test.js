@@ -6,6 +6,32 @@ var testRules = require('./util/testRules.js');
 
 describe('miscellaneous rules', function() {
 
+  describe('isInteger', function() {
+    it ('should fail for strings', function() {
+      return testRules({
+        isInteger: true
+      }, 2, '2');      
+    });
+    it ('should fail for floats', function() {
+      return testRules({
+        isInteger: true
+      }, 2, 2.5);      
+    });
+    it ('should not allow nulls', function() {
+      return testRules({
+        isInteger: true
+      }, 2, null);      
+    });
+  });
+
+  describe('notEmptyString', function() {
+    it('should no allow nulls', function() {
+      return testRules({
+        isNotEmptyString: true
+      }, 'sfsa', null);      
+    });
+  });
+
   describe('max/min', function() {
     it(' should support "max" rule ', function() {
       return testRules({
@@ -30,6 +56,12 @@ describe('miscellaneous rules', function() {
           max: 5
         }, 4, 6);
       });
+    });
+    it('should not allow `null` values', function() {
+      return testRules({
+        min: 3,
+        max: 5
+      }, 4, null);
     });
   });
 
@@ -58,6 +90,19 @@ describe('miscellaneous rules', function() {
         }, 'abcd', 'abcdef');
       });
     });
+    it('should not allow null values', function() {
+      return testRules({
+        minLength: 3,
+        maxLength: 5
+      }, 'abcd', null);
+    });
+    it('should allow empty string values', function() {
+      return testRules({
+        minLength: 3,
+        maxLength: 5
+      }, '', 'abcdef');
+    });
+
   });  
 
   describe('isURL', function() {
@@ -103,7 +148,7 @@ describe('miscellaneous rules', function() {
       }, 'bloop', 'foo');
     });
   });
-  
+
 
   describe('regex rule', function() {
     it ('should support regex', function() {
