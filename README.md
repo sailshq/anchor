@@ -1,9 +1,6 @@
-anchor
-======
-[![Build Status](https://travis-ci.org/sailsjs/anchor.svg?branch=master)](https://travis-ci.org/sailsjs/anchor)
-[![npm version](https://badge.fury.io/js/anchor.svg)](http://badge.fury.io/js/anchor)
+# anchor
 
-Anchor is a javascript library that lets you define strict types. It is used in Waterline and Sails.
+Anchor is a JavaScript library that lets you enforce high-level validation rules.  It is used in Waterline and Sails to complement the type safety imposed by [rttc](https://npmjs.com/package/rttc).
 
 This makes it really useful for things like:
 + Form validation on the client or server
@@ -12,38 +9,58 @@ This makes it really useful for things like:
 + Validating objects before storing them in a data store
 + Normalizing polymorphic behaviors
 
-Adds support for strongly typed arguments, like http://lea.verou.me/2011/05/strongly-typed-javascript/, but goes a step further by adding support for array and object sub-validation.
-It's also the core validation library for the Sails ecosystem.
+Adds support for strongly typed arguments, like http://lea.verou.me/2011/05/strongly-typed-javascript/, but goes a step further by adding support for array and object sub-validation.  It's also the core validation rule library for the Sails ecosystem.
 
 (Built on top of the great work with https://github.com/chriso/validator.js)
 
-## Installation
+## Usage
 
-### Client-side
+#### Installation
+
+For the browser:
+
 ```html
 <script type='text/javscript' src="/js/anchor.js"></script>
 ```
 
-### node.js
+For Node.js:
+
 ```bash
 npm install anchor
 ```
 
-
-## Tests
+```javascript
+var anchor = require('anchor');
 ```
-npm test
+
+#### Documentation
+
+The up-to-date documentation for high-level anchor validation rules is maintained on the [Sails framework website](http://sailsjs.com).
+
+You can find a detailed reference of all validation rules under [Concepts > Models & ORM > Validations](http://sailsjs.com/documentation/concepts/models-and-orm/validations).  For more details on standalone usage, see the source code in this repo.
+
+#### Help
+
+Check out the recommended [community support options](http://sailsjs.com/support) for tutorials and other resources.  If you have a specific question, or just need to clarify how something works, [ask for help](https://gitter.im/balderdashy/sails) or reach out to the core team [directly](http://sailsjs.com/flagship).
+
+You can keep up to date with security patches, the Sails/Waterline release schedule, new database adapters, and events in your area by following us ([@sailsjs](https://twitter.com/sailsjs)) and [@waterlineorm](https://twitter.com/waterlineorm) on Twitter.
+
+## Bugs &nbsp; [![NPM version](https://badge.fury.io/js/anchor.svg)](http://npmjs.com/package/anchor)
+To report a bug, [click here](http://sailsjs.com/bugs).
+
+## Contribute &nbsp; [![Build Status](https://travis-ci.org/sailsjs/anchor.png?branch=master)](https://travis-ci.org/sailsjs/anchor)
+Please observe the guidelines and conventions laid out in our [contribution guide](http://sailsjs.com/documentation/contributing) when opening issues or submitting pull requests.
+
+#### Tests
+All tests are written with [mocha](https://mochajs.org/) and should be run with [npm](https://www.npmjs.com/):
+
+``` bash
+  $ npm test
 ```
 
 
 ## License
 
-MIT
+This core package, like the rest of the [Sails framework](http://sailsjs.com), is free and open-source under the [MIT License](http://sailsjs.com/license).
 
-© 2012-2016 Mike McNeil, [Balderdash Design Co](http://balderdash.co), The Treeline Company and contributors
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+[![image_squidhome@2x.png](http://sailsjs.com/images/bkgd_squiddy.png)](http://sailsjs.com/studio)
