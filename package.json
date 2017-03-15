@@ -33,7 +33,8 @@
   "dependencies": {
     "@mapbox/geojsonhint": "1.2.1",
     "@sailshq/lodash": "^3.10.2",
-    "validator": "4.4.0"
+    "validator": "4.4.0",
+    "geojsonhint": "2.0.0"
   },
   "devDependencies": {
     "async": "~0.2.10",
