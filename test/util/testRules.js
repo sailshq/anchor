@@ -1,6 +1,4 @@
-var _ = require('@sailshq/lodash');
 var anchor = require('../../index.js');
-var async = require('async');
 
 // Test a rule given a deliberate example and nonexample
 // Test WITH and WITHOUT callback

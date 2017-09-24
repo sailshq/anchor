@@ -1,8 +1,8 @@
 {
   "name": "anchor",
   "version": "1.1.1",
-  "description": "Recursive validation library with support for objects and lists",
-  "homepage": "http://sailsjs.org",
+  "description": "High-level validation library for Node.js (used in Waterline)",
+  "homepage": "https://sailsjs.com",
   "keywords": [
     "validation",
     "recursive-validator",
@@ -35,7 +35,7 @@
     "validator": "4.4.0"
   },
   "devDependencies": {
-    "async": "~0.2.10",
-    "mocha": "2.3.4"
+    "eslint": "3.19.0",
+    "mocha": "3.0.2"
   }
 }
