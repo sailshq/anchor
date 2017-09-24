@@ -21,7 +21,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "npm run lint && npm run custom-tests && npm run bench",
+    "test": "npm run lint && npm run custom-tests",
     "custom-tests": "node ./node_modules/mocha/bin/mocha -R dot test",
     "lint": "node ./node_modules/eslint/bin/eslint . --max-warnings=0 --ignore-pattern 'test/' && echo '✔  Your code looks good.'"
   },
