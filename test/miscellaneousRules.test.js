@@ -1,4 +1,3 @@
-var anchor = require('../index.js');
 var testRules = require('./util/testRules.js');
 
 
@@ -9,17 +8,17 @@ describe('miscellaneous rules', function() {
     it ('should fail for strings', function() {
       return testRules({
         isInteger: true
-      }, 2, '2');      
+      }, 2, '2');
     });
     it ('should fail for floats', function() {
       return testRules({
         isInteger: true
-      }, 2, 2.5);      
+      }, 2, 2.5);
     });
     it ('should not allow nulls', function() {
       return testRules({
         isInteger: true
-      }, 2, null);      
+      }, 2, null);
     });
   });
 
@@ -27,7 +26,7 @@ describe('miscellaneous rules', function() {
     it('should no allow nulls', function() {
       return testRules({
         isNotEmptyString: true
-      }, 'sfsa', null);      
+      }, 'sfsa', null);
     });
   });
 
@@ -102,7 +101,7 @@ describe('miscellaneous rules', function() {
       }, '', 'abcdef');
     });
 
-  });  
+  });
 
   describe('isURL', function() {
 
@@ -115,7 +114,7 @@ describe('miscellaneous rules', function() {
     it('should support "isURL" rule with options', function() {
       return testRules({
         isURL: {
-          require_protocol: true
+          require_protocol: true//eslint-disable-line camelcase
         }
       }, 'http://sailsjs.org', 'www.sailsjs.org');
     });
