@@ -2,11 +2,7 @@
  * Module dependencies
  */
 
-var util = require('@sailshq/lodash');
-var sanitize = require('validator').sanitize;
 var _ = require('@sailshq/lodash');
-
-var rules = require('./lib/rules');
 var match = require('./lib/match');
 
 
@@ -43,7 +39,7 @@ module.exports = function (entity, ruleset) {
     // the validation.
     var ruleVal = _.isBoolean(ruleset[rule]) ? undefined : ruleset[rule];
     errors = errors.concat(match(entity, rule, ruleVal));
-    
+
   }
 
   // If errors exist, return the list of them
