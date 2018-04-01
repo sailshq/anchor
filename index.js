@@ -20,6 +20,9 @@ module.exports = function (entity, ruleset) {
   // Look for explicit rules
   for (var rule in ruleset) {
 
+
+    // TODO: In next major version, remove this: It should definitely not be here.
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // Normalize the value if it looks like a boolean
     if(ruleset[rule] === 'true') {
       ruleset[rule] = true;
@@ -28,6 +31,7 @@ module.exports = function (entity, ruleset) {
     if(ruleset[rule] === 'false') {
       ruleset[rule] = false;
     }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     // If the value is false, then we shouldn't even run the validation
     if(ruleset[rule] === false) {
