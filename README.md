@@ -1,15 +1,6 @@
 # anchor
 
-Anchor is a JavaScript library that lets you enforce high-level validation rules.  It is used in Waterline and Sails to complement the type safety imposed by [rttc](https://npmjs.com/package/rttc).
-
-This makes it really useful for things like:
-+ Form validation on the client or server
-+ Ensuring compliance with an API
-+ Ensuring that the proper arguments were passed into a function or command-line script
-+ Validating objects before storing them in a data store
-+ Normalizing polymorphic behaviors
-
-Adds support for strongly typed arguments, like http://lea.verou.me/2011/05/strongly-typed-javascript/, but goes a step further by adding support for array and object sub-validation.  It's also the core validation rule library for the Sails ecosystem.
+Anchor is a JavaScript library that lets you enforce [high-level validation rules](https://sailsjs.com/documentation/concepts/models-and-orm/validations).  It is used in [Waterline and Sails](https://sailsjs.com/features) to complement the type safety imposed by [rttc](https://npmjs.com/package/rttc).
 
 (Built on top of the great work with https://www.npmjs.com/package/validator)
 
@@ -37,7 +28,9 @@ var anchor = require('anchor');
 
 The up-to-date documentation for high-level anchor validation rules is maintained on the [Sails framework website](http://sailsjs.com).
 
-You can find a detailed reference of all validation rules under [Concepts > Models & ORM > Validations](http://sailsjs.com/documentation/concepts/models-and-orm/validations).  For more details on standalone usage, see the source code in this repo.
+You can find a detailed reference of all validation rules under [Concepts > Models & ORM > Validations](http://sailsjs.com/documentation/concepts/models-and-orm/validations).
+
+> For more details on standalone usage, see the source code in this repo.
 
 #### Help
 
@@ -61,8 +54,8 @@ All tests are written with [mocha](https://mochajs.org/) and should be run with 
 
 ## License
 
-Copyright 2012-present, Mike McNeil
+Copyright 2012-present, [Mike McNeil](https://twitter.com/mikermcneil)
 
 This core package, like the rest of the [Sails framework](http://sailsjs.com), is free and open-source under the [MIT License](http://sailsjs.com/license).
 
-[![image_squidhome@2x.png](http://sailsjs.com/images/bkgd_squiddy.png)](http://sailsjs.com/studio)
+[![image_squidhome@2x.png](http://sailsjs.com/images/bkgd_squiddy.png)](http://sailsjs.com/about)
