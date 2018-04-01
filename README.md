@@ -11,7 +11,7 @@ This makes it really useful for things like:
 
 Adds support for strongly typed arguments, like http://lea.verou.me/2011/05/strongly-typed-javascript/, but goes a step further by adding support for array and object sub-validation.  It's also the core validation rule library for the Sails ecosystem.
 
-(Built on top of the great work with https://github.com/chriso/validator.js)
+(Built on top of the great work with https://www.npmjs.com/package/validator)
 
 ## Usage
 
@@ -60,6 +60,8 @@ All tests are written with [mocha](https://mochajs.org/) and should be run with 
 
 
 ## License
+
+Copyright 2012-present, Mike McNeil
 
 This core package, like the rest of the [Sails framework](http://sailsjs.com), is free and open-source under the [MIT License](http://sailsjs.com/license).
 
