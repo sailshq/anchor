@@ -34,10 +34,10 @@
   "readmeFilename": "README.md",
   "dependencies": {
     "@sailshq/lodash": "^3.10.2",
-    "validator": "4.4.0"
+    "validator": "5.7.0"
   },
   "devDependencies": {
-    "eslint": "3.19.0",
+    "eslint": "4.11.0",
     "mocha": "3.0.2"
   }
 }
