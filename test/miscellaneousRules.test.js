@@ -121,7 +121,7 @@ describe('miscellaneous rules', function() {
   });
 
   describe('isBefore/isAfter date', function() {
-    it(' should support "before" rule ', function() {
+    it(' should support "isBefore" rule ', function() {
       return testRules({
         isBefore: new Date()
       }, new Date(Date.now() - 100000), new Date(Date.now() + 1000000));
