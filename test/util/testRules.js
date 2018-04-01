@@ -1,3 +1,5 @@
+var util = require('util');
+var _ = require('@sailshq/lodash');
 var anchor = require('../../index.js');
 
 // Test a rule given a deliberate example and nonexample
@@ -6,22 +8,15 @@ module.exports = function testRules (rules, example, nonexample) {
 
   // Throw an error if there's any trouble
   // (not a good production usage pattern-- just here for testing)
-  var exampleOutcome, nonexampleOutcome;
 
-  // Should be falsy
-  exampleOutcome = anchor(example, rules);
-
-  // Should be an array
-  nonexampleOutcome = anchor(nonexample, rules);
-
-  if (exampleOutcome.length) {
-    return gotErrors('Valid input marked with error!', exampleOutcome, example);
-  }
-  if (!nonexampleOutcome.length) {
-    return gotErrors('Invalid input (' + nonexample + ') allowed through.', rules, nonexample);
+  var exampleOutcome = anchor(example, rules);
+  if (exampleOutcome.length > 0) {
+    throw new Error('Valid input marked with error: '+util.inspect(exampleOutcome,{depth:null})+ '\nExample: '+util.inspect(example,{depth:null}));
   }
 
-  function gotErrors (errMsg, err, data) {
-    throw new Error(errMsg);
+  var nonexampleOutcome = anchor(nonexample, rules);
+  if (!_.isArray(nonexampleOutcome) || nonexampleOutcome.length === 0) {
+    throw new Error('Invalid input (' + nonexample + ') allowed through.  '+util.inspect(rules,{depth:null})+ '\nNon-example: '+util.inspect(nonexample,{depth:null}));
   }
+
 };
