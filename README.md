@@ -6,23 +6,6 @@ Anchor is a JavaScript library that lets you enforce [high-level validation rule
 
 ## Usage
 
-#### Installation
-
-For the browser:
-
-```html
-<script type='text/javscript' src="/js/anchor.js"></script>
-```
-
-For Node.js:
-
-```bash
-npm install anchor
-```
-
-```javascript
-var anchor = require('anchor');
-```
 
 #### Documentation
 
@@ -32,7 +15,27 @@ You can find a detailed reference of all validation rules under [Concepts > Mode
 
 > For more details on standalone usage, see the source code in this repo.
 
-#### Help
+<!--
+  #### Standalone usage
+
+  For the browser:
+
+  ```html
+  <script type='text/javscript' src="/js/anchor.js"></script>
+  ```
+
+  For Node.js:
+
+  ```bash
+  npm install anchor
+  ```
+
+  ```javascript
+  var anchor = require('anchor');
+  ```
+-->
+
+## Help
 
 Check out the recommended [community support options](http://sailsjs.com/support) for tutorials and other resources.  If you have a specific question, or just need to clarify how something works, [ask for help](https://gitter.im/balderdashy/sails) or reach out to the core team [directly](http://sailsjs.com/flagship).
 
