@@ -121,10 +121,51 @@ describe('miscellaneous rules', function() {
   });
 
   describe('isBefore/isAfter date', function() {
-    it(' should support "isBefore" rule ', function() {
+    it(' should support "isBefore" rule when validating Date instances (Date) vs. Date', function() {
       return testRules({
         isBefore: new Date()
       }, new Date(Date.now() - 100000), new Date(Date.now() + 1000000));
+    });
+    it(' should support "isBefore" rule when validating Date instances (Date) vs. number', function() {
+      return testRules({
+        isBefore: Date.now()
+      }, new Date(Date.now() - 100000), new Date(Date.now() + 1000000));
+    });
+    it(' should support "isBefore" rule when validating js timestamps (number) vs. number', function() {
+      return testRules({
+        isBefore: Date.now()
+      }, (new Date(Date.now() - 100000)).getTime(), (new Date(Date.now() + 1000000)).getTime());
+    });
+    it(' should support "isBefore" rule when validating js timestamps (number) vs. Date', function() {
+      return testRules({
+        isBefore: new Date()
+      }, (new Date(Date.now() - 100000)).getTime(), (new Date(Date.now() + 1000000)).getTime());
+    });
+    it(' should support "isBefore" rule when validating JSON timestamps (string) vs. string', function() {
+      return testRules({
+        isBefore: (new Date()).toJSON()
+      }, (new Date(Date.now() - 100000)).toJSON(), (new Date(Date.now() + 1000000)).toJSON());
+    });
+    it(' should support "isBefore" rule when validating JSON timestamps (string) vs. number', function() {
+      return testRules({
+        isBefore: Date.now()
+      }, (new Date(Date.now() - 100000)).toJSON(), (new Date(Date.now() + 1000000)).toJSON());
+    });
+
+    it(' should support "isAfter" rule when validating Date instances (Date) vs. Date', function() {
+      return testRules({
+        isAfter: new Date()
+      }, new Date(Date.now() + 100000), new Date(Date.now() - 1000000));
+    });
+    it(' should support "isAfter" rule when validating js timestamps (number) vs. number', function() {
+      return testRules({
+        isAfter: new Date()
+      }, (new Date(Date.now() + 100000)).getTime(), (new Date(Date.now() - 1000000)).getTime());
+    });
+    it(' should support "isAfter" rule when validating JSON timestamps (string) vs. string', function() {
+      return testRules({
+        isAfter: (new Date()).toJSON()
+      }, (new Date(Date.now() + 100000)).toJSON(), (new Date(Date.now() - 1000000)).toJSON());
     });
   });
 
