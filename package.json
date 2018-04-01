@@ -1,6 +1,6 @@
 {
   "name": "anchor",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "High-level validation library for Node.js (used in Waterline)",
   "homepage": "https://sailsjs.com",
   "keywords": [
