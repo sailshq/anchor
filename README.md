@@ -39,12 +39,12 @@ You can find a detailed reference of all validation rules under [Concepts > Mode
 
 Check out the recommended [community support options](http://sailsjs.com/support) for tutorials and other resources.  If you have a specific question, or just need to clarify how something works, [ask for help](https://gitter.im/balderdashy/sails) or reach out to the core team [directly](http://sailsjs.com/flagship).
 
-You can keep up to date with security patches, the Sails/Waterline release schedule, new database adapters, and events in your area by following us ([@sailsjs](https://twitter.com/sailsjs)) and [@waterlineorm](https://twitter.com/waterlineorm) on Twitter.
+You can keep up to date with security patches, the Sails/Waterline release schedule, new database adapters, and events in your area by following us [@sailsjs](https://twitter.com/sailsjs) and [@waterlineorm](https://twitter.com/waterlineorm) on Twitter.
 
 ## Bugs &nbsp; [![NPM version](https://badge.fury.io/js/anchor.svg)](http://npmjs.com/package/anchor)
 To report a bug, [click here](http://sailsjs.com/bugs).
 
-## Contribute &nbsp; [![Build Status](https://travis-ci.org/sailsjs/anchor.png?branch=master)](https://travis-ci.org/sailsjs/anchor)
+## Contribute &nbsp; [![Build Status](https://travis-ci.org/sailshq/anchor.png?branch=master)](https://travis-ci.org/sailshq/anchor)
 Please observe the guidelines and conventions laid out in our [contribution guide](http://sailsjs.com/documentation/contributing) when opening issues or submitting pull requests.
 
 #### Tests
