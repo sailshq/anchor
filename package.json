@@ -37,7 +37,7 @@
     "validator": "5.7.0"
   },
   "devDependencies": {
-    "eslint": "4.11.0",
+    "eslint": "6.6.0",
     "mocha": "3.0.2"
   }
 }
