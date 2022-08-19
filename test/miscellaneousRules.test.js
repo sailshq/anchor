@@ -118,6 +118,18 @@ describe('miscellaneous rules', function() {
         }
       }, 'http://sailsjs.org', 'www.sailsjs.org');
     });
+    it('should validate localhost as a url with the "isURL" rule', function() {
+      return testRules({
+        isURL: true
+      }, 'localhost', 'localhosts');
+    });
+    it('should validate localhost as a url with the "isURL" rule with options', function() {
+      return testRules({
+        isURL: {
+          require_protocol: true//eslint-disable-line camelcase
+        }
+      }, 'http://localhost:1337', 'localhost:1337');
+    });
   });
 
   describe('isBefore/isAfter date', function() {
